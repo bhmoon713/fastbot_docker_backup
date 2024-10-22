@@ -32,7 +32,7 @@ ament_python_install_package(${PROJECT_NAME})
 # Install Python executables
 install(PROGRAMS
   src/differential_multi.py
-  src/gripper_ss.py
+  src/gripper_as.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
