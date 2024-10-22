@@ -2,16 +2,16 @@
 <launch>
 
     <arg name="use_sim_time" default="False"/>
-    <arg name="robot_name" default="boxbot_1"/>
-    <arg name="robot_file" default="boxbot_multi.xacro"/>
+    <arg name="robot_name" default="fastbot_1"/>
+    <arg name="robot_file" default="fastbot_multi.xacro"/>
 
     <!-- Differential motors driver -->
-    <include file="$(find-pkg-share boxbot_bringup)/launch/differential_drive_multi.launch.py">
+    <include file="$(find-pkg-share fastbot_bringup)/launch/differential_drive_multi.launch.py">
         <arg name="robot_name_value" value="$(var robot_name)"/>
     </include>
 
     <!-- Robot state publisher -->
-    <include file="$(find-pkg-share boxbot_description)/launch/robot_state_publisher.launch.py">
+    <include file="$(find-pkg-share fastbot_description)/launch/robot_state_publisher.launch.py">
         <arg name="robot_name" value="$(var robot_name)"/>
         <arg name="robot_file" value="$(var robot_file)"/>
     </include>
@@ -21,25 +21,19 @@
     	<param name="image_size" value="[320, 240]"/>
     </node>
    
-    <!-- RPLIDAR A1 -->
-    <include file="$(find-pkg-share rplidar_ros)/launch/rplidar_a1_launch.py">
-        <!-- <arg name="robot_name" value="$(var robot_name)"/> -->
-    </include>
+    <!-- Push the RPLIDAR node into a namespace -->
+    <group ns="$(var robot_name)">
+        <include file="$(find-pkg-share rplidar_ros)/launch/rplidar.launch.py">
+        </include>
+    </group>
 
     <!-- Lidar odometry -->
-    <include file="$(find-pkg-share boxbot_bringup)/launch/laser_scan_matcher.launch.py">
+    <include file="$(find-pkg-share fastbot_bringup)/launch/laser_scan_matcher.launch.py">
         <arg name="robot_name" value="$(var robot_name)"/>
     </include>
 
     <!-- Gripper server node -->
-    <!-- <node pkg="boxbot_firmware" exec="gripper_ss.py" name="gripper_server_node" output="screen">
-    </node> -->
-    <node pkg="boxbot_firmware" exec="gripper_as.py" name="gripper_server_node" output="screen">
+    <node pkg="fastbot_firmware" exec="gripper_as.py" name="gripper_server_node" output="screen">
     </node>
-
-    <!-- Battery simulator -->
-    <!-- <include file="$(find-pkg-share boxbot_rmf_utils)/launch/start_battery.launch.xml">
-        <arg name="robot_name" value="$(var robot_name)"/>
-    </include> -->
 
 </launch>
