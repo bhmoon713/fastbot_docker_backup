@@ -24,7 +24,6 @@
     <group>
         <push-ros-namespace namespace="$(var robot_name)"/>
         <include file="$(find-pkg-share rplidar_ros)/launch/rplidar.launch.py">
-            <param name="topic_name" value="$(var robot_name)/scan"/>
         </include>
     </group>    
     <!-- Lidar odometry -->
