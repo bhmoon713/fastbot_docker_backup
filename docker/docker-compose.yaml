@@ -1,0 +1,21 @@
+name: fastbot_humble
+
+services:
+  fastbot-humble-container:
+    image: theconstructai/fastbot:humble
+    pull_policy: always
+    privileged: true
+    network_mode: host
+    container_name: fastbot-humble-container
+    volumes:
+      - /var/lib/theconstruct.rrl/cyclonedds.xml:/var/lib/theconstruct.rrl/cyclonedds.xml
+      - /dev:/dev
+      - ./ros_entrypoint.sh:/ros_entrypoint.sh
+      - ./bringup.launch.xml:/root/ros2_ws/install/boxbot_bringup/share/boxbot_bringup/launch/bringup.launch.xml       
+      - ./gripper_as.py:/root/ros2_ws/install/boxbot_firmware/lib/boxbot_firmware/gripper_as.py 
+    environment:
+      - RMW_IMPLEMENTAION=rmw_cyclonedds_cpp
+      - CYCLONEDDS_URI=/var/lib/theconstruct.rrl/cyclonedds.xml
+    entrypoint: /ros_entrypoint.sh
+    command: ["ros2", "launch", "boxbot_bringup", "bringup.launch.xml", "robot_name:=fastbot_1"]
+    restart: always
