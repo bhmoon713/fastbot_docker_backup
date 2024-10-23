@@ -3,17 +3,6 @@
   
   <xacro:macro name="fastbot_body" params="robot_name">
     
-	<!-- Define the dummy root link -->
-	<link name="${robot_name}_dummy_root"/>
-
-
-	<!-- Connect your original root link to the dummy root link -->
-	<joint name="${robot_name}_dummy_root_to_${robot_name}_base_link" type="fixed">
-		<parent link="${robot_name}_dummy_root"/>
-		<child link="${robot_name}_base_link"/>
-		<!-- Include the inertia properties here -->
-	</joint>
-
     <link name="${robot_name}_base_link">
 		<inertial>
 			<origin rpy="0 0 0" xyz="-0.002760040106013823 -0.001188341092731165 0.0718803300182357"/>
