@@ -19,6 +19,7 @@ RUN source /ros_entrypoint.sh \
     && cd /root/ros2_ws/src \
     && git clone https://bitbucket.org/theconstructcore/fastbot.git \
     && git clone -b ros2 https://github.com/allenh1/rplidar_ros.git \
+    && git clone https://github.com/AlexKaravaev/ros2_laser_scan_matcher.git \
     && git clone https://github.com/AlexKaravaev/csm.git \
     && cd /root/ros2_ws \
     && colcon build \
