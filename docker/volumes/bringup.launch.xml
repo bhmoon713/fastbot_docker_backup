@@ -24,9 +24,10 @@
     <group>
         <push-ros-namespace namespace="$(var robot_name)"/>
         <include file="$(find-pkg-share rplidar_ros)/launch/rplidar.launch.py">
+            <arg name="robot_name" value="$(var robot_name)"/>
         </include>
     </group>  
-      
+
     <!-- Lidar odometry -->
     <include file="$(find-pkg-share fastbot_bringup)/launch/laser_scan_matcher.launch.py">
         <arg name="robot_name" value="$(var robot_name)"/>
