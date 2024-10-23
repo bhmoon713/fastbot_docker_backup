@@ -6,7 +6,7 @@ services:
     pull_policy: always
     privileged: true
     network_mode: host
-    container_name: fastbot-humble-container
+    container_name: fastbot-humble
     volumes:
       - /var/lib/theconstruct.rrl/cyclonedds.xml:/var/lib/theconstruct.rrl/cyclonedds.xml
       - /dev:/dev
