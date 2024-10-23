@@ -13,6 +13,7 @@ services:
       - ./volumes/ros_entrypoint.sh:/ros_entrypoint.sh
       - ./volumes/bringup.launch.xml:/root/ros2_ws/install/fastbot_bringup/share/fastbot_bringup/launch/bringup.launch.xml   
       - ./volumes/rplidar.launch.py:/root/ros2_ws/install/rplidar_ros/share/rplidar_ros/launch/rplidar.launch.py    
+      - ./volumes/laser_scan_matcher.launch.py:/root/ros2_ws/install/ros2_laser_scan_matcher/share/ros2_laser_scan_matcher/launch/laser_scan_matcher.launch.py
     environment:
       - RMW_IMPLEMENTAION=rmw_cyclonedds_cpp
       - CYCLONEDDS_URI=/var/lib/theconstruct.rrl/cyclonedds.xml
