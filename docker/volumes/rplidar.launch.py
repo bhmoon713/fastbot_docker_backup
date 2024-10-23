@@ -8,7 +8,7 @@ def launch_setup(context, *args, **kwargs):
     """Accept arguments from a parent launch (include)"""
     robot_name = LaunchConfiguration("robot_name").perform(context)
 
-    rplidar_node = LifecycleNode(
+    rplidar_node = Node(
         package="rplidar_composition",
         executable="rplidar_composition",
         name="rplidar_node",
