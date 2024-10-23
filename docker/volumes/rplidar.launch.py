@@ -7,10 +7,6 @@ from launch.actions import DeclareLaunchArgument
 def generate_launch_description():
     robot_name_arg = DeclareLaunchArgument("robot_name", default_value="fastbot_1")
 
-    frame_id_arg = TextSubstitution(
-        text="{}_lidar".format(LaunchConfiguration("robot_name"))
-    )
-
     return LaunchDescription(
         [
             robot_name_arg,
@@ -23,7 +19,12 @@ def generate_launch_description():
                     {
                         "serial_port": "/dev/ttyUSB0",
                         "serial_baudrate": 115200,  # A1 / A2
-                        "frame_id": frame_id_arg,  # Use the combined frame_id
+                        "frame_id": TextSubstitution(
+                            text="{}{}".format(
+                                LaunchConfiguration("robot_name").perform(None),
+                                "_lidar",
+                            )
+                        ),
                         "inverted": False,
                         "angle_compensate": True,
                     }
