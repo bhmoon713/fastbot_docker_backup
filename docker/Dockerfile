@@ -14,18 +14,25 @@ RUN apt-get update && apt-get install -y \
 # Use /bin/bash for the next RUN command
 SHELL ["/bin/bash", "-c"]
 
+# Clone repositories and pull the latest changes every time
+WORKDIR /root/ros2_ws/src
+RUN git clone https://bitbucket.org/theconstructcore/fastbot.git || true \
+    && cd fastbot && git pull origin master && cd .. \
+    && git clone -b ros2 https://github.com/allenh1/rplidar_ros.git || true \
+    && cd rplidar_ros && git pull origin ros2 && cd .. \
+    && git clone https://github.com/AlexKaravaev/ros2_laser_scan_matcher.git || true \
+    && cd ros2_laser_scan_matcher && git pull origin main && cd .. \
+    && git clone https://github.com/AlexKaravaev/csm.git || true \
+    && cd csm && git pull origin ros2_csm_eigen && cd ..
+
+# Build the workspace
+WORKDIR /root/ros2_ws
 RUN source /ros_entrypoint.sh \
-    && mkdir -p /root/ros2_ws/src \
-    && cd /root/ros2_ws/src \
-    && git clone https://bitbucket.org/theconstructcore/fastbot.git \
-    && git clone -b ros2 https://github.com/allenh1/rplidar_ros.git \
-    && git clone https://github.com/AlexKaravaev/ros2_laser_scan_matcher.git \
-    && git clone https://github.com/AlexKaravaev/csm.git \
-    && cd /root/ros2_ws \
     && colcon build \
     && rm -rf /root/ros2_ws/src \
     && source install/setup.bash
 
+# Stage 2: Run stage
 FROM ros:humble-ros-core
 
 RUN apt-get update && apt-get install -y \
@@ -43,4 +50,3 @@ RUN apt-get update && apt-get install -y \
 COPY --from=build /root/ros2_ws /root/ros2_ws
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
-
