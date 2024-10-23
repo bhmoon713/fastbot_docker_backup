@@ -14,6 +14,7 @@ services:
       - ./volumes/bringup.launch.xml:/root/ros2_ws/install/fastbot_bringup/share/fastbot_bringup/launch/bringup.launch.xml   
       - ./volumes/rplidar.launch.py:/root/ros2_ws/install/rplidar_ros/share/rplidar_ros/launch/rplidar.launch.py    
       - ./volumes/laser_scan_matcher.launch.py:/root/ros2_ws/install/fastbot_bringup/share/fastbot_bringup/launch/laser_scan_matcher.launch.py
+      - ./volumes/gripper_as.py:/root/ros2_ws/install/fastbot_firmware/lib/fastbot_firmware/gripper_as.py
     environment:
       - RMW_IMPLEMENTAION=rmw_cyclonedds_cpp
       - CYCLONEDDS_URI=/var/lib/theconstruct.rrl/cyclonedds.xml
