@@ -10,8 +10,9 @@ services:
     volumes:
       - /var/lib/theconstruct.rrl/cyclonedds.xml:/var/lib/theconstruct.rrl/cyclonedds.xml
       - /dev:/dev
-      - ./ros_entrypoint.sh:/ros_entrypoint.sh
-      - ./bringup.launch.xml:/root/ros2_ws/install/fastbot_bringup/share/fastbot_bringup/launch/bringup.launch.xml       
+      - ./volumes/ros_entrypoint.sh:/ros_entrypoint.sh
+      - ./volumes/bringup.launch.xml:/root/ros2_ws/install/fastbot_bringup/share/fastbot_bringup/launch/bringup.launch.xml   
+      - ./volumes/rplidar.launch.py:/root/ros2_ws/install/rplidar_ros/share/rplidar_ros/launch/rplidar.launch.py    
     environment:
       - RMW_IMPLEMENTAION=rmw_cyclonedds_cpp
       - CYCLONEDDS_URI=/var/lib/theconstruct.rrl/cyclonedds.xml
