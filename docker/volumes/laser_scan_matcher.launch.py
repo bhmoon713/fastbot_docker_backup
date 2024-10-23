@@ -28,6 +28,7 @@ def launch_setup(context, *args, **kwargs):
                 "laser_frame": robot_name + "_lidar_frame",
                 "robot_name": robot_name,
                 "publish_odom": robot_name + "/odom",
+                "publish_tf": True,
             }
         ],
         remappings=[("/scan", robot_name + "/scan")],
