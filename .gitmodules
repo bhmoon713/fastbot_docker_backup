@@ -1,0 +1,3 @@
+[submodule "attach_gazebo"]
+	path = attach_gazebo
+	url = https://rodrigo55@bitbucket.org/theconstructcore/attach_gazebo.git
