@@ -1,8 +1,13 @@
 <?xml version="1.0" ?>
 <robot name="fastbot_body" xmlns:xacro="http://ros.org/wiki/xacro">
   
+  <!-- Define the constant pi -->
+  <xacro:property name="PI" value="3.141592653589793" />
+
   <xacro:macro name="fastbot_body" params="robot_name">
     
+	
+
     <link name="${robot_name}_base_link">
 		<inertial>
 			<origin rpy="0 0 0" xyz="-0.002760040106013823 -0.001188341092731165 0.0718803300182357"/>
@@ -171,6 +176,27 @@
 		</collision>
 	</link>
 
+	<link name="${robot_name}_gripper">
+		<inertial>
+			<origin rpy="0 0 0" xyz="-1.2613740557063325e-17 4.204580185687775e-18 0.00500000000000006"/>
+			<mass value="0.040152630360403944"/>
+			<inertia ixx="1.1e-05" ixy="0.0" ixz="0.0" iyy="1.1e-05" iyz="-0.0" izz="2.2e-05"/>
+		</inertial>
+		<visual>
+			<origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+			<geometry>
+                <mesh filename="$(find fastbot_description)/models/meshes/LG-NS-gripper.dae" scale="1.0 1.0 1.0"/>
+     		</geometry>
+			<material name="black"/>
+		</visual>
+		<collision>
+			<origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+			<geometry>
+                <mesh filename="$(find fastbot_description)/models/meshes/LG-NS-gripper.dae" scale="1.0 1.0 1.0"/>
+			</geometry>
+		</collision>
+	</link>
+
 	<link name="${robot_name}_lidar">
 	</link>
 
@@ -278,131 +304,23 @@
 		<child link="${robot_name}_camera"/>
 	</joint>
 
-	<joint name="${robot_name}_base_to_gripper" type="fixed">
-		<origin rpy="0 0 -1.57" xyz="0.07 0.0 0.03"/>
+	<joint name="${robot_name}_gripper" type="fixed">
+		<origin rpy="0 0 1.57" xyz="0.1 0.0 0.01"/>
 		<parent link="${robot_name}_base_link"/>
-		<child link="${robot_name}_support_link"/>
+		<child link="${robot_name}_gripper"/>
+	</joint>
+	
+
+	<link name="${robot_name}_camera_sensor">
+		
+	</link>
+
+	<joint name="${robot_name}_Rigid10" type="fixed">
+		<origin rpy="${-PI/2} 0 ${-PI/2}" xyz="0 0 0"/>
+		<parent link="${robot_name}_camera"/>
+		<child link="${robot_name}_camera_sensor"/>
 	</joint>
 
-    <!-- Support Link -->
-    <link name="${robot_name}_support_link">
-		<inertial>
-			<mass value="0.03"/>
-			<inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>			
-		</inertial>
-		<visual>
-		  <origin xyz="0 0 0" rpy="0 0 0"/>
-		  <geometry>
-			<box size="0.07 0.01 0.01"/>
-		  </geometry>
-		</visual>
-		<collision>
-			<origin xyz="0 0 0" rpy="0 0 0"/>
-			<geometry>
-			  <box size="0.07 0.01 0.01"/>
-			</geometry>  
-		</collision>
-	</link>
-  
-	<!-- Gripper Link 1 -->
-	<link name="${robot_name}_gripper_link_1">
-		<inertial>
-			<mass value="0.03"/>
-			<inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>			
-		</inertial>
-		<visual>
-		  <origin xyz="0.025 0.05 0" rpy="0 0 1.57"/>
-		  <geometry>
-			<box size="0.09 0.01 0.01"/>
-		  </geometry>
-		</visual>
-		<!-- <collision>
-			<origin xyz="0.025 0.05 0" rpy="0 0 1.57"/>
-			<geometry>
-			  <box size="0.09 0.01 0.01"/>
-			</geometry>			  
-		</collision> -->
-	</link>
-  
-	<!-- Gripper Link 2 -->
-	<link name="${robot_name}_gripper_link_2">
-		<inertial>
-			<mass value="0.03"/>
-			<inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>			
-		</inertial>
-		<visual>
-		  <origin xyz="-0.025 0.05 0" rpy="0 0 1.57"/>
-		  <geometry>
-			<box size="0.09 0.01 0.01"/>
-		  </geometry>
-		</visual>
-		<!-- <collision>
-			<origin xyz="-0.025 0.05 0" rpy="0 0 1.57"/>
-			<geometry>
-			  <box size="0.09 0.01 0.01"/>
-			</geometry>			  
-		</collision> -->
-	</link>
-  
-	<!-- Prismatic Joint -->
-	<joint name="${robot_name}_prismatic_joint" type="prismatic">
-		<parent link="${robot_name}_support_link"/>
-		<child link="${robot_name}_gripper_link_1"/>
-		<origin xyz="0 0 0" rpy="0 0 0"/>
-		<axis xyz="1 0 0"/>
-		<limit lower="-0.04" upper="0.04" effort="1.0" velocity="1.0"/>
-		<dynamics damping="0.1"/>
-	</joint>
-  
-	<!-- Prismatic Joint -->
-	<joint name="${robot_name}_prismatic_joint_2" type="prismatic">
-		<mimic joint="${robot_name}_prismatic_joint" multiplier="-1" offset="0"/>
-		<parent link="${robot_name}_support_link"/>
-		<child link="${robot_name}_gripper_link_2"/>
-		<origin xyz="0 0 0" rpy="0 0 0"/>
-		<axis xyz="1 0 0"/>
-		<limit lower="-0.04" upper="0.04" effort="1.0" velocity="1.0"/>
-		<dynamics damping="0.1"/>
-	</joint>
-
-	<ros2_control name="GazeboSystem" type="system">
-		<hardware>
-		  <plugin>gazebo_ros2_control/GazeboSystem</plugin>
-		</hardware>
-		<joint name="${robot_name}_prismatic_joint">
-			<command_interface name="position">
-			<!-- <param name="min">-1</param>
-			<param name="max">1</param> -->
-		  	</command_interface>
-		  	<state_interface name="position">
-				<param name="initial_value">0.0</param>
-		  	</state_interface>
-		  	<state_interface name="velocity"/>
-		  	<state_interface name="effort"/>
-		</joint>
-		<joint name="${robot_name}_prismatic_joint_2" mimic="true">
-			<param name="mimic">${robot_name}_prismatic_joint</param>
-			<param name="multiplier">-1</param>
-			<command_interface name="position"/>
-			<state_interface name="position">
-				<param name="initial_value">0.0</param>
-		  	</state_interface>
-			<state_interface name="effort"/>
-			<state_interface name="velocity"/>
-		</joint>
-	</ros2_control> 
-
-	<!-- Gripper ROS 2 control plugin -->
-	<!-- <gazebo>
-		<plugin name="${robot_name}_gripper_ros2_control" filename="libgazebo_ros2_control.so">
-			<ros>
-				<namespace>${robot_name}</namespace>
-			</ros>
-			<robot_param>${robot_name}_robot_description</robot_param>
-			<robot_param_node>${robot_name}_robot_state_publisher</robot_param_node>
-			<parameters>$(find fastbot_gazebo)/config/gripper_controller_${robot_name}.yaml</parameters>
-		</plugin>
-	</gazebo> -->
 
 
 
