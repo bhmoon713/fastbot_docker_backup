@@ -16,6 +16,7 @@ services:
       - ./volumes/laser_scan_matcher.launch.py:/root/ros2_ws/install/fastbot_bringup/share/fastbot_bringup/launch/laser_scan_matcher.launch.py
       - ./volumes/gripper_as.py:/root/ros2_ws/install/fastbot_firmware/lib/fastbot_firmware/gripper_as.py
       - ./volumes/fastbot_body.xacro:/root/ros2_ws/install/fastbot_description/share/fastbot_description/models/urdf/fastbot_body.xacro
+      - ./volumes/differential_multi.py:/root/ros2_ws/install/fastbot_firmware/lib/fastbot_firmware/differential_multi.py
     environment:
       - RMW_IMPLEMENTAION=rmw_cyclonedds_cpp
       - CYCLONEDDS_URI=/var/lib/theconstruct.rrl/cyclonedds.xml
