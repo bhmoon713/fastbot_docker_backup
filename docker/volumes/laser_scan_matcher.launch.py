@@ -25,7 +25,7 @@ def launch_setup(context, *args, **kwargs):
             {
                 "base_frame": robot_name + "_base_link",
                 "odom_frame": robot_name + "_odom",
-                "laser_frame": robot_name + "_lidar",
+                "laser_frame": robot_name + "_lidar_frame",
                 "robot_name": robot_name,
                 "publish_odom": robot_name + "/odom",
                 "publish_tf": True,
