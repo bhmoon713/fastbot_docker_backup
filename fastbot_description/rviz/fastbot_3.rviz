@@ -51,31 +51,31 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: true
-        fastbot_1_base_link:
+        fastbot_3_base_link:
           Value: true
-        fastbot_1_camera:
+        fastbot_3_camera:
           Value: true
-        fastbot_1_caster:
+        fastbot_3_caster:
           Value: true
-        fastbot_1_dummy_root:
+        fastbot_3_dummy_root:
           Value: true
-        fastbot_1_imu:
+        fastbot_3_imu:
           Value: true
-        fastbot_1_lidar:
+        fastbot_3_lidar:
           Value: true
-        fastbot_1_lidar_body:
+        fastbot_3_lidar_body:
           Value: true
-        fastbot_1_lidar_bottom:
+        fastbot_3_lidar_bottom:
           Value: true
-        fastbot_1_lidar_frame:
+        fastbot_3_lidar_frame:
           Value: true
-        fastbot_1_lidar_motorend:
+        fastbot_3_lidar_motorend:
           Value: true
-        fastbot_1_support_link:
+        fastbot_3_support_link:
           Value: true
-        fastbot_1_wheel_left:
+        fastbot_3_wheel_left:
           Value: true
-        fastbot_1_wheel_right:
+        fastbot_3_wheel_right:
           Value: true
       Marker Scale: 1
       Name: TF
@@ -83,26 +83,26 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        fastbot_1_dummy_root:
-          fastbot_1_base_link:
-            fastbot_1_camera:
+        fastbot_3_dummy_root:
+          fastbot_3_base_link:
+            fastbot_3_camera:
               {}
-            fastbot_1_caster:
+            fastbot_3_caster:
               {}
-            fastbot_1_imu:
+            fastbot_3_imu:
               {}
-            fastbot_1_lidar_body:
-              fastbot_1_lidar_bottom:
-                fastbot_1_lidar_frame:
-                  fastbot_1_lidar:
+            fastbot_3_lidar_body:
+              fastbot_3_lidar_bottom:
+                fastbot_3_lidar_frame:
+                  fastbot_3_lidar:
                     {}
-              fastbot_1_lidar_motorend:
+              fastbot_3_lidar_motorend:
                 {}
-            fastbot_1_support_link:
+            fastbot_3_support_link:
               {}
-            fastbot_1_wheel_left:
+            fastbot_3_wheel_left:
               {}
-            fastbot_1_wheel_right:
+            fastbot_3_wheel_right:
               {}
       Update Interval: 0
       Value: true
@@ -136,7 +136,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /fastbot_1/scan
+        Value: /fastbot_3/scan
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
@@ -177,7 +177,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep All
         Reliability Policy: Reliable
-        Value: /fastbot_1/odom
+        Value: /fastbot_3/odom
       Value: true
     - Class: rviz_default_plugins/Image
       Enabled: true
@@ -191,12 +191,12 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /fastbot_1/image_raw/compressed
+        Value: /fastbot_3/image_raw/compressed
       Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: fastbot_1_odom
+    Fixed Frame: fastbot_3_odom
     Frame Rate: 30
   Name: root
   Tools:
