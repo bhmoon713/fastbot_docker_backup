@@ -18,7 +18,7 @@ def launch_setup(context, *args, **kwargs):
                 "serial_port": "/dev/ttyUSB0",
                 "serial_baudrate": 115200,  # A1 / A2
                 "frame_id": robot_name + "_lidar_frame",
-                "inverted": True,
+                "inverted": False,
                 "angle_compensate": True,
             }
         ],
