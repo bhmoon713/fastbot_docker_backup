@@ -7,6 +7,10 @@ services:
     privileged: true
     network_mode: host
     container_name: fastbot-humble
+    environment:
+      - ROBOT_NAME = "fastbot_X"
+      - RMW_IMPLEMENTAION=rmw_cyclonedds_cpp
+      - CYCLONEDDS_URI=/var/lib/theconstruct.rrl/cyclonedds.xml
     volumes:
       - /var/lib/theconstruct.rrl/cyclonedds.xml:/var/lib/theconstruct.rrl/cyclonedds.xml
       - /dev:/dev
@@ -19,9 +23,6 @@ services:
       - ./volumes/gripper_as.py:/root/ros2_ws/install/fastbot_firmware/lib/fastbot_firmware/gripper_as.py
       - ./volumes/differential_multi.py:/root/ros2_ws/install/fastbot_firmware/lib/fastbot_firmware/differential_multi.py
       - ./volumes/fastbot_body.xacro:/root/ros2_ws/install/fastbot_description/share/fastbot_description/models/urdf/fastbot_body.xacro
-    environment:
-      - RMW_IMPLEMENTAION=rmw_cyclonedds_cpp
-      - CYCLONEDDS_URI=/var/lib/theconstruct.rrl/cyclonedds.xml
     entrypoint: /ros_entrypoint.sh
-    command: ["/bringup.sh"]
+    command: ["/bringup.sh", "$ROBOT_NAME"]
     restart: always
