@@ -5,53 +5,37 @@
     <arg name="robot_name" default="fastbot_1"/>
     <arg name="robot_file" default="fastbot_multi.xacro"/>
 
-    <!-- RPLIDAR A1 -->
-    <group>
-        <push-ros-namespace namespace="$(var robot_name)"/>
-        <include file="$(find-pkg-share rplidar_ros)/launch/rplidar.launch.py">
-            <arg name="robot_name" value="$(var robot_name)"/>
-        </include>
-    </group>  
-
-    <!-- Delay for 1 second -->
-    <timer period="1.0"/>
-
     <!-- Differential motors driver -->
     <include file="$(find-pkg-share fastbot_bringup)/launch/differential_drive_multi.launch.py">
         <arg name="robot_name_value" value="$(var robot_name)"/>
     </include>
-
-    <!-- Delay for 1 second -->
-    <timer period="1.0"/>
 
     <!-- Raspberry Pi camera -->
     <node pkg="v4l2_camera" exec="v4l2_camera_node" name="v4l2_camera_node" namespace="$(var robot_name)" output="screen">
     	<param name="image_size" value="[320, 240]"/>
     </node>
 
-    <!-- Delay for 1 second -->
-    <timer period="1.0"/>
-
     <!-- Lidar odometry -->
     <include file="$(find-pkg-share fastbot_bringup)/launch/laser_scan_matcher.launch.py">
         <arg name="robot_name" value="$(var robot_name)"/>
     </include>
 
-    <!-- Delay for 1 second -->
-    <timer period="1.0"/>
-
     <!-- Gripper server node -->
     <node pkg="fastbot_firmware" exec="gripper_as.py" name="gripper_server_node" output="screen">
     </node>
 
-    <!-- Delay for 1 second -->
-    <timer period="1.0"/>
-    
     <!-- Robot state publisher -->
     <include file="$(find-pkg-share fastbot_description)/launch/robot_state_publisher.launch.py">
         <arg name="robot_name" value="$(var robot_name)"/>
         <arg name="robot_file" value="$(var robot_file)"/>
     </include>
 
+    <!-- RPLIDAR A1 -->
+    <group>
+        <push-ros-namespace namespace="$(var robot_name)"/>
+        <include file="$(find-pkg-share rplidar_ros)/launch/rplidar.launch.py">
+            <arg name="robot_name" value="$(var robot_name)"/>
+        </include>
+    </group> 
 
 </launch>
