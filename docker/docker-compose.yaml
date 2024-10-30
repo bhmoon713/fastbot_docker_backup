@@ -11,7 +11,9 @@ services:
       - /var/lib/theconstruct.rrl/cyclonedds.xml:/var/lib/theconstruct.rrl/cyclonedds.xml
       - /dev:/dev
       - ./volumes/ros_entrypoint.sh:/ros_entrypoint.sh
-      - ./volumes/bringup.launch.xml:/root/ros2_ws/install/fastbot_bringup/share/fastbot_bringup/launch/bringup.launch.xml   
+      - ./volumes/bringup.sh:/bringup.sh
+      - ./volumes/bringup.launch.xml:/root/ros2_ws/install/fastbot_bringup/share/fastbot_bringup/launch/bringup.launch.xml 
+      - ./volumes/rplidar.launch.xml:/root/ros2_ws/install/fastbot_bringup/share/fastbot_bringup/launch/rplidar.launch.xml   
       - ./volumes/rplidar.launch.py:/root/ros2_ws/install/rplidar_ros/share/rplidar_ros/launch/rplidar.launch.py    
       - ./volumes/laser_scan_matcher.launch.py:/root/ros2_ws/install/fastbot_bringup/share/fastbot_bringup/launch/laser_scan_matcher.launch.py
       - ./volumes/gripper_as.py:/root/ros2_ws/install/fastbot_firmware/lib/fastbot_firmware/gripper_as.py
@@ -21,5 +23,5 @@ services:
       - RMW_IMPLEMENTAION=rmw_cyclonedds_cpp
       - CYCLONEDDS_URI=/var/lib/theconstruct.rrl/cyclonedds.xml
     entrypoint: /ros_entrypoint.sh
-    command: ["ros2", "launch", "fastbot_bringup", "bringup.launch.xml", "robot_name:=fastbot_1"]
+    command: ["/bringup.sh"]
     restart: always
