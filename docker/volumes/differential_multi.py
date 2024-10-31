@@ -146,48 +146,76 @@ class Differential(Node):
         self.joint_state_msg.velocity = [self.left_vel, self.right_vel]
         self.joint_state_pub.publish(self.joint_state_msg)
 
-    def wheel_vel_executer(self, left_speed, right_speed):
-        global lPWM, rPWM, lDIR, rDIR
 
-        # Calculate PWM values
-        lspeedPWM = max(
-            min((abs(left_speed) / max_speed) * max_pwm_val, max_pwm_val), min_pwm_val
-        )
-        rspeedPWM = max(
-            min((abs(right_speed) / max_speed) * max_pwm_val, max_pwm_val), min_pwm_val
-        )
+def same_sign(a, b):
+    return a * b > 0
 
+
+def wheel_vel_executer(self, left_speed, right_speed, turn_balance=2.0):
+    global max_pwm_val
+    global min_pwm_val
+    global lPWM, rPWM, lDIR, rDIR
+    global previous_lPWM, previous_rPWM
+
+    # Convert linear speeds to PWM values
+    lspeedPWM = max(
+        min((abs(left_speed) / max_speed) * max_pwm_val, max_pwm_val), min_pwm_val
+    )
+    rspeedPWM = max(
+        min((abs(right_speed) / max_speed) * max_pwm_val, max_pwm_val), min_pwm_val
+    )
+
+    # Apply turn balancing if both wheels move in the same direction
+    if same_sign(left_speed, right_speed):
+        if abs(right_speed) > abs(left_speed):
+            factor = left_speed / right_speed
+            lspeedPWM *= factor / turn_balance
+            self.get_logger().info(f">>>>> Adjusted PWM LEFT: {lspeedPWM}")
+        elif abs(left_speed) > abs(right_speed):
+            factor = right_speed / left_speed
+            rspeedPWM *= factor / turn_balance
+            self.get_logger().info(f">>>>> Adjusted PWM RIGHT: {rspeedPWM}")
+
+    # Log the calculated PWM values
+    self.get_logger().info(
+        f"Calculated PWM values - Left: {lspeedPWM}, Right: {rspeedPWM}"
+    )
+
+    # Handle potential NaN values
+    if math.isnan(lspeedPWM) or math.isnan(rspeedPWM):
+        self.get_logger().error(
+            f"NaN value detected in PWM calculation. Using previous values: "
+            f"previous_lPWM: {previous_lPWM}, previous_rPWM: {previous_rPWM}"
+        )
+        lPWM.data = previous_lPWM
+        rPWM.data = previous_rPWM
+    else:
         lPWM.data = int(lspeedPWM)
         rPWM.data = int(rspeedPWM)
+        previous_lPWM = lPWM.data
+        previous_rPWM = rPWM.data
 
-        # Set directions and publish
-        if left_speed >= 0:
-            GPIO.output(leftForward, GPIO.HIGH)
-            GPIO.output(leftBackward, GPIO.LOW)
-            lDIR.data = True
-        else:
-            GPIO.output(leftForward, GPIO.LOW)
-            GPIO.output(leftBackward, GPIO.HIGH)
-            lDIR.data = False
+    # Apply PWM values to the motors and log
+    pwmL.ChangeDutyCycle(lPWM.data)
+    pwmR.ChangeDutyCycle(rPWM.data)
+    self.get_logger().info(
+        f"Applied PWM values - Left PWM: {lPWM.data}, Right PWM: {rPWM.data}"
+    )
 
-        if right_speed >= 0:
-            GPIO.output(rightForward, GPIO.HIGH)
-            GPIO.output(rightBackward, GPIO.LOW)
-            rDIR.data = True
-        else:
-            GPIO.output(rightForward, GPIO.LOW)
-            GPIO.output(rightBackward, GPIO.HIGH)
-            rDIR.data = False
+    # Publish PWM values
+    self.lpwm_pub.publish(lPWM)
+    self.rpwm_pub.publish(rPWM)
 
-        # Change PWM duty cycles
-        pwmL.ChangeDutyCycle(lPWM.data)
-        pwmR.ChangeDutyCycle(rPWM.data)
+    # Set motor directions and publish
+    lDIR.data = left_speed >= 0
+    rDIR.data = right_speed >= 0
+    GPIO.output(leftForward, GPIO.HIGH if lDIR.data else GPIO.LOW)
+    GPIO.output(leftBackward, GPIO.LOW if lDIR.data else GPIO.HIGH)
+    GPIO.output(rightForward, GPIO.HIGH if rDIR.data else GPIO.LOW)
+    GPIO.output(rightBackward, GPIO.LOW if rDIR.data else GPIO.HIGH)
 
-        # Publish PWM and direction messages
-        self.lpwm_pub.publish(lPWM)
-        self.rpwm_pub.publish(rPWM)
-        self.ldir_pub.publish(lDIR)
-        self.rdir_pub.publish(rDIR)
+    self.ldir_pub.publish(lDIR)
+    self.rdir_pub.publish(rDIR)
 
     def stop(self):
         # Stop motors by setting PWM to 0
