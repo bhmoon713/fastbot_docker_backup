@@ -11,7 +11,7 @@ services:
       - ROBOT_NAME=fastbot_X
       - RMW_IMPLEMENTAION=rmw_cyclonedds_cpp
       - CYCLONEDDS_URI=/var/lib/theconstruct.rrl/cyclonedds.xml
-    volumes:
+    volumes: # TODO: include all of these volumes as part of the image (build new one)
       - /var/lib/theconstruct.rrl/cyclonedds.xml:/var/lib/theconstruct.rrl/cyclonedds.xml
       - /dev:/dev
       - ./volumes/ros_entrypoint.sh:/ros_entrypoint.sh
