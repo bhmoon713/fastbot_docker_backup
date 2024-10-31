@@ -146,6 +146,21 @@ class Differential(Node):
         self.joint_state_msg.velocity = [self.left_vel, self.right_vel]
         self.joint_state_pub.publish(self.joint_state_msg)
 
+    def timer_callback(self):
+        now = self.get_clock().now()
+        elapsed_time = (now - self.last_time).nanoseconds / 1e9
+        self.last_time = now
+
+        # Update wheel positions based on previously calculated velocities
+        self.right_wheel_pos += self.right_vel * elapsed_time
+        self.left_wheel_pos += self.left_vel * elapsed_time
+
+        # Update and publish the joint states
+        self.joint_state_msg.header.stamp = now.to_msg()
+        self.joint_state_msg.position = [self.left_wheel_pos, self.right_wheel_pos]
+        self.joint_state_msg.velocity = [self.left_vel, self.right_vel]
+        self.joint_state_pub.publish(self.joint_state_msg)
+
 
 def same_sign(a, b):
     return a * b > 0
@@ -230,21 +245,6 @@ def wheel_vel_executer(self, left_speed, right_speed, turn_balance=2.0):
         rPWM.data = 0
         self.lpwm_pub.publish(lPWM)
         self.rpwm_pub.publish(rPWM)
-
-    def timer_callback(self):
-        now = self.get_clock().now()
-        elapsed_time = (now - self.last_time).nanoseconds / 1e9
-        self.last_time = now
-
-        # Update wheel positions based on previously calculated velocities
-        self.right_wheel_pos += self.right_vel * elapsed_time
-        self.left_wheel_pos += self.left_vel * elapsed_time
-
-        # Update and publish the joint states
-        self.joint_state_msg.header.stamp = now.to_msg()
-        self.joint_state_msg.position = [self.left_wheel_pos, self.right_wheel_pos]
-        self.joint_state_msg.velocity = [self.left_vel, self.right_vel]
-        self.joint_state_pub.publish(self.joint_state_msg)
 
 
 def main(args=None):
