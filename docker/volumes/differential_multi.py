@@ -24,7 +24,7 @@ motor_rpm = 205  # Max RPM of motor at full voltage
 wheel_diameter = 0.065  # Wheel diameter in meters
 wheel_separation = 0.17  # Distance between wheels in meters
 max_pwm_val = 100  # Maximum PWM value (for Raspberry Pi)
-min_pwm_val = 20  # Minimum PWM value required to move
+min_pwm_val = 15  # Minimum PWM value required to move
 
 # Global variables
 previous_lPWM = min_pwm_val
