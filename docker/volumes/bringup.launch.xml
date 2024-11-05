@@ -6,9 +6,15 @@
     <arg name="robot_file" default="fastbot_multi.xacro"/>
 
     <!-- Differential motors driver -->
-    <include file="$(find-pkg-share fastbot_bringup)/launch/differential_drive_multi.launch.py">
+    <!-- <include file="$(find-pkg-share fastbot_bringup)/launch/differential_drive_multi.launch.py">
         <arg name="robot_name_value" value="$(var robot_name)"/>
-    </include>
+    </include> -->
+    <node>
+        <param name="serial_port" value="/dev/ttyACM0"/>
+        <param name="baud_rate" value="57600"/>
+        <param name="loop_rate" value="30"/>
+        <param name="encoder_cpr" value="2500"/>
+    </node>
 
     <!-- Raspberry Pi camera -->
     <node pkg="v4l2_camera" exec="v4l2_camera_node" name="v4l2_camera_node" namespace="$(var robot_name)" output="screen">
