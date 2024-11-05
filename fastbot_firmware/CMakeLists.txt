@@ -33,6 +33,7 @@ ament_python_install_package(${PROJECT_NAME})
 install(PROGRAMS
   src/differential_multi.py
   src/gripper_as.py
+  src/motor_driver.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
