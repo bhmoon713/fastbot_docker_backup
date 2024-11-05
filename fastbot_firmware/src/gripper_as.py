@@ -22,11 +22,11 @@ class GripperActionServer(Node):
             handle_accepted_callback=self.handle_accepted_callback,
             cancel_callback=self.cancel_callback,
         )
-        self.servo_pin = 18
+        self.servo_pin = 19
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.servo_pin, GPIO.OUT)
-        self.p = GPIO.PWM(self.servo_pin, 1000)
-        self.p.start(50)
+        self.p = GPIO.PWM(self.servo_pin, 50)
+        self.p.start(7.5)
         self.get_logger().info("Gripper Action Server has been started")
 
     def goal_callback(self, goal_request):
@@ -49,11 +49,11 @@ class GripperActionServer(Node):
         )
 
         if goal_handle.request.command.position < 0:  # close the gripper
-            self.p.ChangeDutyCycle(45)  # e.g., 90 degrees
+            self.p.ChangeDutyCycle(4.5)  # e.g., 90 degrees
             time.sleep(0.5)
             self.get_logger().info("Gripper closed")
         else:  # open the gripper
-            self.p.ChangeDutyCycle(90)  # e.g., 0 degrees
+            self.p.ChangeDutyCycle(7.5)  # e.g., 0 degrees
             time.sleep(0.5)
             self.get_logger().info("Gripper opened")
 
