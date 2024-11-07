@@ -9,7 +9,7 @@ from rclpy.node import Node
 from typing import List, Optional
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Twist
-from serial_motor_demo_msgs.msg import MotorVels, EncoderVals
+from serial_motor_msgs.msg import MotorVels, EncoderVals
 
 
 class MotorDriver(Node):
