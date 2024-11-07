@@ -133,6 +133,13 @@ class MotorDriver(Node):
         left_wheel_speed = linear_vel - (angular_vel * self.wheel_separation) / 2
         right_wheel_speed = linear_vel + (angular_vel * self.wheel_separation) / 2
 
+        # Avoid divide by zero in wheel radius
+        if self.wheel_radius == 0:
+            self._logger.error(
+                "Wheel radius is zero, cannot calculate angular velocities."
+            )
+            return
+
         # Convert wheel linear speeds (m/s) to angular velocities (rad/s).
         left_wheel_rad_per_sec = left_wheel_speed / self.wheel_radius
         right_wheel_rad_per_sec = right_wheel_speed / self.wheel_radius
@@ -147,7 +154,14 @@ class MotorDriver(Node):
         scaler = (1 / (2 * math.pi)) * self.encoder_cpr * (1 / self.loop_rate)
         mot_1_ct_per_loop = left_wheel_rad_per_sec * scaler
         mot_2_ct_per_loop = right_wheel_rad_per_sec * scaler
-        self.send_feedback_motor_command(mot_1_ct_per_loop, mot_2_ct_per_loop)
+
+        # Check if counts per loop are finite before sending
+        if math.isfinite(mot_1_ct_per_loop) and math.isfinite(mot_2_ct_per_loop):
+            self.send_feedback_motor_command(mot_1_ct_per_loop, mot_2_ct_per_loop)
+        else:
+            self._logger.warning(
+                "Non-finite motor count detected, skipping command send."
+            )
 
     def check_encoders(self) -> None:
         """Reads encoder values, calculates speed, and publishes encoder readings and motor speeds."""
