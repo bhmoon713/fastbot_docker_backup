@@ -9,7 +9,7 @@
     <!-- <include file="$(find-pkg-share fastbot_bringup)/launch/differential_drive_multi.launch.py">
         <arg name="robot_name_value" value="$(var robot_name)"/>
     </include> -->
-    <node>
+    <node pkg="serial_motor" exec="motor_driver" name="serial_motor_driver" namespace="$(var robot_name)" output="screen">
         <param name="serial_port" value="/dev/ttyACM0"/>
         <param name="baud_rate" value="57600"/>
         <param name="loop_rate" value="30"/>
