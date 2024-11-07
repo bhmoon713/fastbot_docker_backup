@@ -44,7 +44,7 @@ RUN apt-get update && apt-get install -y \
     ros-humble-control-msgs \
     python3-pip \
     && rm -rf /var/lib/apt/lists/* \
-    && pip install RPi.GPIO 
+    && pip install RPi.GPIO pyserial
 
 # Copy built workspace from the build stage
 COPY --from=build /root/ros2_ws /root/ros2_ws
