@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y \
     git \
     ros-humble-tf2-ros \
     ros-humble-tf2-geometry-msgs \
+    ros-humble-rmw-cyclonedds-cpp \
     libboost-all-dev \
     && rm -rf /var/lib/apt/lists/*
 
