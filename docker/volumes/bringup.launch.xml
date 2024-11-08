@@ -4,17 +4,18 @@
     <arg name="use_sim_time" default="False"/>
     <arg name="robot_name" default="fastbot_1"/>
     <arg name="robot_file" default="fastbot_multi.xacro"/>
+    <arg name="serial_port" default="/dev/ttyACM0"/>
+    <arg name="baud_rate" default="57600"/>
+    <arg name="loop_rate" default="30"/>
+    <arg name="encoder_cpr" default="2500"/>
 
-    <!-- Differential motors driver -->
-    <!-- <include file="$(find-pkg-share fastbot_bringup)/launch/differential_drive_multi.launch.py">
-        <arg name="robot_name_value" value="$(var robot_name)"/>
-    </include> -->
-    <node pkg="serial_motor" exec="motor_driver" name="serial_motor_driver" namespace="$(var robot_name)" output="screen">
-        <param name="serial_port" value="/dev/ttyACM0"/>
-        <param name="baud_rate" value="57600"/>
-        <param name="loop_rate" value="30"/>
-        <param name="encoder_cpr" value="2500"/>
-    </node>
+    <!-- Differential serial motor driver -->
+    <include file="$(find-pkg-share serial_motor)/launch/serial_motor.launch.py">
+        <arg name="serial_port" value="$(var serial_port)"/>
+        <arg name="baud_rate" value="$(var baud_rate)"/>
+        <arg name="loop_rate" value="$(var loop_rate)"/>
+        <arg name="encoder_cpr" value="$(var encoder_cpr)"/>
+    </include>
 
     <!-- Raspberry Pi camera -->
     <node pkg="v4l2_camera" exec="v4l2_camera_node" name="v4l2_camera_node" namespace="$(var robot_name)" output="screen">
