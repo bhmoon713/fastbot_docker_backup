@@ -92,10 +92,7 @@ class SquareMotionNode(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    node = SquareMotionNode(
-        cmd_vel_topic="cmd_vel",  # Default topic, can be overridden in launch file
-        odom_topic="odom",  # Default topic, can be overridden in launch file
-    )
+    node = SquareMotionNode()
 
     rclpy.spin(node)
     node.destroy_node()
