@@ -9,6 +9,8 @@ from rclpy.node import Node
 from typing import List, Optional
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Twist
+from rclpy.executors import MultiThreadedExecutor
+from rclpy.callback_groups import ReentrantCallbackGroup
 from serial_motor_msgs.msg import MotorVels, EncoderVals
 
 
@@ -52,13 +54,23 @@ class MotorDriver(Node):
         self.wheel_separation = self.get_parameter("wheel_separation").value
         self.wheel_radius = self.wheel_diameter / 2
 
-        # ROS publishers and subscribers
-        self.subscription = self.create_subscription(
-            Twist, "cmd_vel", self.cmd_vel_callback, 10
+        # ROS 2 publishers and subscribers
+        # Reentrant callback group allows concurrent execution
+        self.callback_group = ReentrantCallbackGroup()
+
+        self._sub_cmd_vel = self.create_subscription(
+            Twist,
+            "cmd_vel",
+            self.cmd_vel_callback,
+            10,
+            callback_group=self.callback_group,
         )
         self.motor_vels_pub_ = self.create_publisher(MotorVels, "motor_vels", 10)
         self.encoder_pub_ = self.create_publisher(EncoderVals, "encoder_vals", 10)
         self.odom_pub_ = self.create_publisher(Odometry, "odom", 10)
+
+        # Timer callback to continuously publish odometry
+        self.create_timer(0.1, self._timer_callback, callback_group=self.callback_group)
 
         # Initialize encoder and speed tracking variables.
         self.last_enc_read_time = time.time()
@@ -118,6 +130,11 @@ class MotorDriver(Node):
             except ValueError:
                 self._logger.error("Failed to parse encoder values.")
         return []
+
+    def _timer_callback(self) -> None:
+        """Timer callback to periodically publish the current odometry."""
+        # Even if the robot hasn't moved, publish the last known odometry state
+        self.check_encoders()
 
     def cmd_vel_callback(self, msg: Twist) -> None:
         """ROS callback to handle 'cmd_vel' Twist messages for motor speed control.
@@ -203,6 +220,9 @@ class MotorDriver(Node):
         current_time = time.time()
         dt = current_time - self.last_time
         self.last_time = current_time
+
+        if dt == 0:
+            return
 
         # Calculate distance traveled by each wheel
         left_distance = self.m1_spd * dt * self.wheel_radius
@@ -299,15 +319,26 @@ class MotorDriver(Node):
 def main(args: Optional[List[str]] = None) -> None:
     """Main function to initialize the MotorDriver node and execute the ROS loop."""
     rclpy.init(args=args)
-    motor_driver = MotorDriver()
 
     try:
-        # Main ROS loop: process callbacks and check encoder values.
-        while rclpy.ok():
-            rclpy.spin_once(motor_driver)
-            motor_driver.check_encoders()
+        # Create node
+        motor_driver = MotorDriver()
+
+        # Initialize MultiThreadedExecutor with two threads for concurrent callbacks
+        executor = MultiThreadedExecutor(num_threads=2)
+        executor.add_node(motor_driver)
+
+        try:
+            # Spin executor to process callbacks
+            executor.spin()
+        finally:
+            # Ensure executor shuts down gracefully
+            executor.shutdown()
+            motor_driver.destroy_node()
+
     finally:
-        # Clean up and shut down the node.
-        motor_driver.close_conn()
-        motor_driver.destroy_node()
         rclpy.shutdown()
+
+
+if __name__ == "__main__":
+    main()
