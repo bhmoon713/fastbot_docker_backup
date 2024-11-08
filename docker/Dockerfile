@@ -17,13 +17,9 @@ SHELL ["/bin/bash", "-c"]
 # Clone repositories and pull the latest changes every time
 WORKDIR /root/ros2_ws/src
 RUN git clone https://bitbucket.org/theconstructcore/fastbot.git || true \
-    && cd fastbot && git pull origin master && cd .. \
     && git clone -b ros2 https://github.com/allenh1/rplidar_ros.git || true \
-    && cd rplidar_ros && git pull origin ros2 && cd .. \
     && git clone https://github.com/AlexKaravaev/ros2_laser_scan_matcher.git || true \
-    && cd ros2_laser_scan_matcher && git pull origin main && cd .. \
-    && git clone https://github.com/AlexKaravaev/csm.git || true \
-    && cd csm && git pull origin ros2_csm_eigen && cd ..
+    && git clone https://github.com/AlexKaravaev/csm.git || true
 
 # Build the workspace
 WORKDIR /root/ros2_ws
