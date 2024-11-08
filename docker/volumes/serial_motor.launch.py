@@ -20,9 +20,9 @@ def launch_setup(context, *args, **kwargs):
     # Access top-level launch arguments defined in generate_launch_description.
     robot_name = LaunchConfiguration("robot_name").perform(context)
     serial_port = LaunchConfiguration("serial_port").perform(context)
-    baud_rate = LaunchConfiguration("baud_rate").perform(context)
-    loop_rate = LaunchConfiguration("loop_rate").perform(context)
-    encoder_cpr = LaunchConfiguration("encoder_cpr").perform(context)
+    baud_rate = int(LaunchConfiguration("baud_rate").perform(context))
+    loop_rate = int(LaunchConfiguration("loop_rate").perform(context))
+    encoder_cpr = int(LaunchConfiguration("encoder_cpr").perform(context))
 
     # Define a ROS 2 Node for the motor driver with parameters such as the serial port and baud rate.
     driver_node = Node(
