@@ -6,10 +6,12 @@ from math import sqrt, pow, atan2
 
 
 class SquareMotionNode(Node):
-    def __init__(self, cmd_vel_topic, odom_topic):
+    def __init__(self):
         super().__init__("square_motion_node")
 
         # Publishers and Subscribers
+        odom_topic = "fastbot_2/odom"
+        cmd_vel_topic = "fastbot_2/cmd_vel"
         self.cmd_vel_pub = self.create_publisher(Twist, cmd_vel_topic, 10)
         self.odom_sub = self.create_subscription(
             Odometry, odom_topic, self.odom_callback, 10
