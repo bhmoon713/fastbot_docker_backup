@@ -1,5 +1,5 @@
-# Stage 1: Build stage
-FROM ros:humble-ros-core AS build
+# Stage 1: Base dependencies stage (install dependencies once)
+FROM ros:humble-ros-core AS base
 
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -10,6 +10,9 @@ RUN apt-get update && apt-get install -y \
     ros-humble-tf2-geometry-msgs \
     libboost-all-dev \
     && rm -rf /var/lib/apt/lists/*
+
+# Stage 2: Clone and build stage
+FROM base AS build
 
 # Use /bin/bash for the next RUN command
 SHELL ["/bin/bash", "-c"]
@@ -23,12 +26,9 @@ RUN git clone https://bitbucket.org/theconstructcore/fastbot.git || true \
 
 # Build the workspace
 WORKDIR /root/ros2_ws
-RUN source /ros_entrypoint.sh \
-    && colcon build \
-    && rm -rf /root/ros2_ws/src \
-    && source install/setup.bash
+RUN source /ros_entrypoint.sh && colcon build && rm -rf /root/ros2_ws/src
 
-# Stage 2: Run stage
+# Stage 3: Final runtime stage
 FROM ros:humble-ros-core
 
 RUN apt-get update && apt-get install -y \
