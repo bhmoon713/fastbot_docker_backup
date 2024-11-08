@@ -23,6 +23,10 @@ class SquareMotionNode(Node):
         self.start_position = None
         self.target_yaw = None
 
+        # Initialize position and orientation
+        self.position = None
+        self.orientation = None
+
         # Timer to run control loop
         self.timer = self.create_timer(0.1, self.control_loop)
 
@@ -45,6 +49,11 @@ class SquareMotionNode(Node):
 
     def control_loop(self):
         twist = Twist()
+
+        # Ensure position is initialized by odom_callback
+        if self.position is None:
+            self.get_logger().warn("Waiting for initial position data...")
+            return
 
         if self.state == "MOVE_FORWARD":
             if self.start_position is None:
