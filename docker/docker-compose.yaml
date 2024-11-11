@@ -18,8 +18,7 @@ services:
       - ./volumes/bringup.sh:/bringup.sh
       - ./volumes/bringup.launch.xml:/root/ros2_ws/install/fastbot_bringup/share/fastbot_bringup/launch/bringup.launch.xml 
       - ./volumes/gripper_as.py:/root/ros2_ws/install/fastbot_firmware/lib/fastbot_firmware/gripper_as.py
-      - ./volumes/motor_driver.py:/serial_motor/setup.py/serial_motor/lib/serial_motor/motor_driver
-      - ./volumes/square_motion_node.py:/serial_motor/setup.py/serial_motor/lib/serial_motor/square_motion_node
+      - ./volumes/rplidar.launch.py:/root/ros2_ws/install/rplidar_ros/share/rplidar_ros/launch/rplidar.launch.py
     entrypoint: /ros_entrypoint.sh
     command: ["/bringup.sh"]
     restart: always
