@@ -32,6 +32,7 @@ def launch_setup(context, *args, **kwargs):
         namespace=robot_name,
         parameters=[
             {
+                "robot_name": robot_name,
                 "serial_port": serial_port,  # Port where the device is connected.
                 "baud_rate": baud_rate,  # Communication speed for the serial connection.
                 "loop_rate": loop_rate,  # Frequency (Hz) at which PID loop spins.
