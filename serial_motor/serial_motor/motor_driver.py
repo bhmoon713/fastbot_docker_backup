@@ -335,8 +335,10 @@ def main(args: Optional[List[str]] = None) -> None:
     rclpy.init(args=args)
 
     try:
+        args_without_ros = rclpy.utilities.remove_ros_args(args)
+
         # Create node
-        motor_driver = MotorDriver()
+        motor_driver = MotorDriver(args_without_ros)
 
         # Initialize MultiThreadedExecutor with two threads for concurrent callbacks
         executor = MultiThreadedExecutor(num_threads=2)
