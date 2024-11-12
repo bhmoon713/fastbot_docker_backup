@@ -25,6 +25,7 @@
     <!-- Lidar odometry -->
     <include file="$(find-pkg-share fastbot_bringup)/launch/laser_scan_matcher.launch.py">
         <arg name="robot_name" value="$(var robot_name)"/>
+        <arg name="use_sim_time" value="$(var use_sim_time)"/>
     </include>
 
     <!-- Gripper server node -->

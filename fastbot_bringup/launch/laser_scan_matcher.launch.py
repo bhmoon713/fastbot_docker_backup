@@ -14,7 +14,7 @@ from launch.conditions import IfCondition
 
 def launch_setup(context, *args, **kwargs):
     ####### DATA INPUT ##########
-    use_sim_time = LaunchConfiguration("use_sim_time")
+    use_sim_time = LaunchConfiguration("use_sim_time").perform(context)
     # This is to access the argument variables. Otherwise we cant access the values
     robot_name = LaunchConfiguration("robot_name").perform(context)
 
