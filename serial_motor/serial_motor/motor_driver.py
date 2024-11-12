@@ -4,6 +4,7 @@ import time
 import math
 import rclpy
 import serial
+import argparse
 from threading import Lock
 from rclpy.node import Node
 from typing import List, Optional
@@ -17,9 +18,10 @@ from serial_motor_msgs.msg import MotorVels, EncoderVals
 class MotorDriver(Node):
     """ROS2 Node for controlling and monitoring a differential drive motor controller."""
 
-    def __init__(self) -> None:
+    def __init__(self, args) -> None:
         """Initialize the MotorDriver node with serial communication, parameters, and publishers/subscribers."""
         super().__init__("motor_driver")
+        self.argument_parsing(args)
 
         # Logger
         self._logger = self.get_logger()
@@ -44,9 +46,6 @@ class MotorDriver(Node):
         self.baud_rate: int = self.get_parameter("baud_rate").value
         self.declare_parameter("serial_debug", value=False)
         self.debug_serial_cmds: bool = self.get_parameter("serial_debug").value
-
-        self.declare_parameter("robot_name", value="fastbot_X")
-        self.robot_name: str = self.get_parameter("robot_name").value
 
         if self.debug_serial_cmds:
             self._logger.info("Serial debug enabled")
@@ -100,6 +99,17 @@ class MotorDriver(Node):
         except serial.SerialException as e:
             self._logger.error(f"Failed to connect to {self.serial_port}: {e}")
             raise
+
+    def argument_parsing(self, args):
+        parser = argparse.ArgumentParser(description="Arguments for frame names.")
+        parser.add_argument(
+            "-robot_name_value",
+            type=str,
+            metavar="botbox_default",
+            default="fastbot_X",
+            help="Name of the robot",
+        )
+        self.args = parser.parse_args(args[1:])
 
     def send_pwm_motor_command(self, mot_1_pwm: float, mot_2_pwm: float) -> None:
         """Send PWM command to set motor speeds.
@@ -246,8 +256,8 @@ class MotorDriver(Node):
         # Create and publish odometry message
         odom_msg = Odometry()
         odom_msg.header.stamp = self.get_clock().now().to_msg()
-        odom_msg.header.frame_id = self.robot_name + "_odom"
-        odom_msg.child_frame_id = self.robot_name + "_base_link"
+        odom_msg.header.frame_id = self.args.robot_name_value + "_odom"
+        odom_msg.child_frame_id = self.args.robot_name_value + "_base_link"
 
         # Set position
         odom_msg.pose.pose.position.x = self.x
