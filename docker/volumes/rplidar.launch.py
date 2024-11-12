@@ -15,7 +15,7 @@ def launch_setup(context, *args, **kwargs):
         output="screen",
         parameters=[
             {
-                "serial_port": "/dev/ttyUSB0",
+                "serial_port": "/dev/rplidar",
                 "serial_baudrate": 115200,  # A1 / A2
                 "frame_id": robot_name + "_lidar",
                 "inverted": False,

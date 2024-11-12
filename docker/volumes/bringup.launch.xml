@@ -4,7 +4,7 @@
     <arg name="use_sim_time" default="False"/>
     <arg name="robot_name" default="fastbot_1"/>
     <arg name="robot_file" default="fastbot_multi.xacro"/>
-    <arg name="serial_port" default="/dev/ttyACM0"/>
+    <arg name="serial_port" default="/dev/arduino_nano"/>
     <arg name="baud_rate" default="57600"/>
     <arg name="loop_rate" default="30"/>
     <arg name="encoder_cpr" default="2500"/>

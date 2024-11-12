@@ -1,0 +1,8 @@
+# Set udev rule to make device_port fixed by rplidar
+# 1. Copy to /etc/udev/rules.d/
+# 2. Reload and restart udev service:
+# 	sudo udevadm control --reload-rules
+# 	sudo udevadm trigger
+# 3. In rplidar.launch.py, change device_port to /tty/rplidar
+KERNEL=="ttyUSB*", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", MODE:="0777", SYMLINK+="rplidar"
+
