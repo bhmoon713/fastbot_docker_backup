@@ -44,6 +44,10 @@ class MotorDriver(Node):
         self.baud_rate: int = self.get_parameter("baud_rate").value
         self.declare_parameter("serial_debug", value=False)
         self.debug_serial_cmds: bool = self.get_parameter("serial_debug").value
+
+        self.declare_parameter("robot_name", value="fastbot_X")
+        self.robot_name: str = self.get_parameter("robot_name").value
+
         if self.debug_serial_cmds:
             self._logger.info("Serial debug enabled")
 
@@ -242,8 +246,8 @@ class MotorDriver(Node):
         # Create and publish odometry message
         odom_msg = Odometry()
         odom_msg.header.stamp = self.get_clock().now().to_msg()
-        odom_msg.header.frame_id = "odom"
-        odom_msg.child_frame_id = "fastbot_1_base_link"
+        odom_msg.header.frame_id = self.robot_name + "_odom"
+        odom_msg.child_frame_id = self.robot_name + "_base_link"
 
         # Set position
         odom_msg.pose.pose.position.x = self.x

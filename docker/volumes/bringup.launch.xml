@@ -11,6 +11,7 @@
 
     <!-- Differential serial motor driver -->
     <include file="$(find-pkg-share serial_motor)/launch/serial_motor.launch.py">
+        <arg name="robot_name" value="$(var robot_name)"/>
         <arg name="serial_port" value="$(var serial_port)"/>
         <arg name="baud_rate" value="$(var baud_rate)"/>
         <arg name="loop_rate" value="$(var loop_rate)"/>

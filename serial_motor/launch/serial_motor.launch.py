@@ -55,7 +55,7 @@ def generate_launch_description():
     """
 
     # Declare a launch argument for the robot's name with a default value.
-    robot_name_arg = DeclareLaunchArgument("robot_name", default_value="robot_X")
+    robot_name_arg = DeclareLaunchArgument("robot_name", default_value="fastbot_X")
     serial_port_arg = DeclareLaunchArgument("serial_port", default_value="/dev/ttyACM0")
     baud_rate_arg = DeclareLaunchArgument("baud_rate", default_value="57600")
     loop_rate_arg = DeclareLaunchArgument("loop_rate", default_value="30")
