@@ -18,7 +18,7 @@ def launch_setup(context, *args, **kwargs):
     """
 
     # Access top-level launch arguments defined in generate_launch_description.
-    robot_name = LaunchConfiguration("robot_name").perform(context)
+    robot_name = LaunchConfiguration("robot_name")
     serial_port = LaunchConfiguration("serial_port").perform(context)
     baud_rate = int(LaunchConfiguration("baud_rate").perform(context))
     loop_rate = int(LaunchConfiguration("loop_rate").perform(context))
@@ -39,6 +39,7 @@ def launch_setup(context, *args, **kwargs):
                 "encoder_cpr": encoder_cpr,  # Encoder counts per revolution.
             }
         ],
+        arguments=["-robot_name", robot_name],
         # remappings=[('/input/topic', '/output/topic')],
         output="screen",  # Output node logs to the screen.
     )
