@@ -18,6 +18,7 @@ services:
       - ./volumes/bringup.sh:/bringup.sh
       - ./volumes/bringup.launch.xml:/root/ros2_ws/install/fastbot_bringup/share/fastbot_bringup/launch/bringup.launch.xml 
       - ./volumes/ros2_laser_scan_matcher:/root/ros2_ws/install/ros2_laser_scan_matcher
+      - ./volumes/raspicam_camera_info.yaml:/root/.ros/camera_info/mmal_service_16.1.yaml
     entrypoint: /ros_entrypoint.sh
     command: ["/bringup.sh"]
     restart: always

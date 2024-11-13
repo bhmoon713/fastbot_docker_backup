@@ -21,6 +21,7 @@
     <!-- Raspberry Pi camera -->
     <node pkg="v4l2_camera" exec="v4l2_camera_node" name="v4l2_camera_node" namespace="$(var robot_name)" output="screen">
     	<param name="image_size" value="[320, 240]"/>
+        <param name="camera_frame_id" value="$(var robot_name)_camera"/>
     </node>
 
     <!-- Lidar odometry -->
