@@ -17,6 +17,7 @@ services:
       - ./volumes/ros_entrypoint.sh:/ros_entrypoint.sh
       - ./volumes/bringup.sh:/bringup.sh
       - ./volumes/bringup.launch.xml:/root/ros2_ws/install/fastbot_bringup/share/fastbot_bringup/launch/bringup.launch.xml 
+      - ./volumes/ros2_laser_scan_matcher:/root/ros2_ws/install/ros2_laser_scan_matcher
     entrypoint: /ros_entrypoint.sh
     command: ["/bringup.sh"]
     restart: always
