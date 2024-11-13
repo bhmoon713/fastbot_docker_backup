@@ -17,14 +17,7 @@ services:
       - ./volumes/ros_entrypoint.sh:/ros_entrypoint.sh
       - ./volumes/bringup.sh:/bringup.sh
       - ./volumes/bringup.launch.xml:/root/ros2_ws/install/fastbot_bringup/share/fastbot_bringup/launch/bringup.launch.xml 
-<<<<<<< HEAD
-      - ./volumes/gripper_as.py:/root/ros2_ws/install/fastbot_firmware/lib/fastbot_firmware/gripper_as.py
-      - ./volumes/rplidar.launch.py:/root/ros2_ws/install/rplidar_ros/share/rplidar_ros/launch/rplidar.launch.py
-      - ./volumes/serial_motor.launch.py:/root/ros2_ws/install/serial_motor/share/serial_motor/launch/serial_motor.launch.py
-      # updated ros2_laser_scan_matcher pkg
       - ./volumes/ros2_laser_scan_matcher:/root/ros2_ws/install/ros2_laser_scan_matcher
-=======
->>>>>>> master
     entrypoint: /ros_entrypoint.sh
     command: ["/bringup.sh"]
     restart: always
