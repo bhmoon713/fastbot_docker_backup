@@ -6,7 +6,7 @@
 <!-- RPLIDAR A1 -->
     <group>
         <push-ros-namespace namespace="$(var robot_name)"/>
-        <include file="$(find-pkg-share rplidar_ros)/launch/rplidar.launch.py">
+        <include file="$(find-pkg-share fastbot_bringup)/launch/rplidar.launch.py">
             <arg name="robot_name" value="$(var robot_name)"/>
         </include>
     </group> 

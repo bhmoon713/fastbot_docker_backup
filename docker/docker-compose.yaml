@@ -11,15 +11,12 @@ services:
       - ROBOT_NAME=fastbot_X
       - RMW_IMPLEMENTAION=rmw_cyclonedds_cpp
       - CYCLONEDDS_URI=/var/lib/theconstruct.rrl/cyclonedds.xml
-    volumes: # TODO: include all of these volumes as part of the image (build new one)
+    volumes: 
       - /var/lib/theconstruct.rrl/cyclonedds.xml:/var/lib/theconstruct.rrl/cyclonedds.xml
       - /dev:/dev
       - ./volumes/ros_entrypoint.sh:/ros_entrypoint.sh
       - ./volumes/bringup.sh:/bringup.sh
       - ./volumes/bringup.launch.xml:/root/ros2_ws/install/fastbot_bringup/share/fastbot_bringup/launch/bringup.launch.xml 
-      - ./volumes/gripper_as.py:/root/ros2_ws/install/fastbot_firmware/lib/fastbot_firmware/gripper_as.py
-      - ./volumes/rplidar.launch.py:/root/ros2_ws/install/rplidar_ros/share/rplidar_ros/launch/rplidar.launch.py
-      - ./volumes/serial_motor.launch.py:/root/ros2_ws/install/serial_motor/share/serial_motor/launch/serial_motor.launch.py
     entrypoint: /ros_entrypoint.sh
     command: ["/bringup.sh"]
     restart: always
