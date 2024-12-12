@@ -29,9 +29,8 @@ class BatteryMonitorNode(Node):
 
     def publish_battery_state(self):
         try:
-            # Read voltage and current
+            # Read voltage
             voltage = self.ina219.bus_voltage + self.ina219.shunt_voltage / 1000
-            current = self.ina219.current / 1000  # Convert to amps
 
             # Calculate percentage
             percentage = self.calculate_battery_percentage(voltage)
@@ -39,8 +38,8 @@ class BatteryMonitorNode(Node):
             # Create BatteryState message
             msg = BatteryState()
             msg.voltage = voltage
-            msg.current = current
-            msg.percentage = percentage
+            msg.current = float("nan")  # Current is not being measured
+            msg.percentage = percentage / 100.0  # Convert to fraction
             msg.present = True
             msg.power_supply_status = BatteryState.POWER_SUPPLY_STATUS_DISCHARGING
             msg.power_supply_health = BatteryState.POWER_SUPPLY_HEALTH_GOOD
@@ -49,7 +48,7 @@ class BatteryMonitorNode(Node):
             # Publish the message
             self.battery_pub.publish(msg)
             self.get_logger().info(
-                f"Voltage: {voltage:.2f} V, Current: {current:.2f} A, Percentage: {percentage:.2f} %"
+                f"Voltage: {voltage:.2f} V, Percentage: {percentage:.2f} %"
             )
 
         except Exception as e:
