@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import BatteryState
@@ -18,7 +19,7 @@ class BatteryMonitorNode(Node):
         # Setup INA219
         i2c_bus = busio.I2C(board.SCL, board.SDA)
         self.ina219 = INA219(i2c_bus)
-        self.ina219.configure()  # Default calibration
+        self.ina219.set_calibration_32V_2A()  # Default calibration
 
         # Battery parameters
         self.voltage_max = 12.6  # Fully charged
