@@ -39,8 +39,10 @@ RUN apt-get update && apt-get install -y \
     ros-humble-image-transport-plugins \
     ros-humble-control-msgs \
     python3-pip \
+    i2c-tools \
+    libgpiod2 \
     && rm -rf /var/lib/apt/lists/* \
-    && pip install RPi.GPIO pyserial
+    && pip install RPi.GPIO pyserial adafruit-circuitpython-ina219 smbus2   
 
 # Copy built workspace from the build stage
 COPY --from=build /root/ros2_ws /root/ros2_ws
