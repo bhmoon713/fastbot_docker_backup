@@ -19,14 +19,14 @@ SHELL ["/bin/bash", "-c"]
 
 # Clone repositories and pull the latest changes every time
 WORKDIR /root/ros2_ws/src
-RUN git clone https://bitbucket.org/theconstructcore/fastbot.git || true \
-    && git clone -b ros2 https://github.com/allenh1/rplidar_ros.git || true \
-    && git clone https://github.com/AlexKaravaev/ros2_laser_scan_matcher.git || true \
-    && git clone https://github.com/AlexKaravaev/csm.git || true
+RUN git clone https://bitbucket.org/theconstructcore/fastbot.git \
+    && git clone -b ros2 https://github.com/allenh1/rplidar_ros.git \
+    && git clone https://github.com/AlexKaravaev/ros2_laser_scan_matcher.git \
+    && git clone https://github.com/AlexKaravaev/csm.git
 
 # Build the workspace
 WORKDIR /root/ros2_ws
-RUN source /ros_entrypoint.sh && colcon build && rm -rf /root/ros2_ws/src
+RUN rm -rf src/fastbot/docker/volumes/ros2_laser_scan_matcher && source /ros_entrypoint.sh && colcon build && rm -rf /root/ros2_ws/src
 
 # Stage 3: Final runtime stage
 FROM ros:humble-ros-core
