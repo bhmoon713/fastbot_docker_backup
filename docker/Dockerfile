@@ -43,6 +43,8 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
     i2c-tools \
     libgpiod2 \
+    libpcap0.8 \
+    libboost-thread1.74.0 \ 
     && rm -rf /var/lib/apt/lists/* \
     && pip install RPi.GPIO pyserial adafruit-circuitpython-ina219 smbus2   
 
