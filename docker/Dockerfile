@@ -6,9 +6,13 @@ RUN apt-get update && apt-get install -y \
     cmake \
     python3-colcon-common-extensions \
     git \
+    python3-rosdep \
     ros-humble-tf2-ros \
     ros-humble-tf2-geometry-msgs \
+    ros-humble-pcl-conversions \
+    ros-humble-diagnostic-updater \
     libboost-all-dev \
+    libpcap-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Stage 2: Clone and build stage
@@ -20,9 +24,7 @@ SHELL ["/bin/bash", "-c"]
 # Clone repositories and pull the latest changes every time
 WORKDIR /root/ros2_ws/src
 RUN git clone https://bitbucket.org/theconstructcore/fastbot.git \
-    && git clone -b ros2 https://github.com/allenh1/rplidar_ros.git \
-    && git clone https://github.com/AlexKaravaev/ros2_laser_scan_matcher.git \
-    && git clone https://github.com/AlexKaravaev/csm.git
+    && git clone https://bitbucket.org/theconstructcore/lslidar_ros2_driver.git
 
 # Build the workspace
 WORKDIR /root/ros2_ws

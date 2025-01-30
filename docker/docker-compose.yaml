@@ -2,13 +2,13 @@ name: fastbot_humble
 
 services:
   fastbot-humble-container:
-    image: theconstructai/fastbot:humble
+    image: theconstructai/fastbot:humble-lslidar
     pull_policy: always
     privileged: true
     network_mode: host
     container_name: fastbot-humble
     environment:
-      - ROBOT_NAME=fastbot_X
+      - ROBOT_NAME=fastbot_1
       - RMW_IMPLEMENTAION=rmw_cyclonedds_cpp
       - CYCLONEDDS_URI=/var/lib/theconstruct.rrl/cyclonedds.xml
     volumes: 
