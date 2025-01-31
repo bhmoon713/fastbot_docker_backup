@@ -19,10 +19,10 @@
     </include>
 
     <!-- Raspberry Pi camera -->
-    <!-- <node pkg="v4l2_camera" exec="v4l2_camera_node" name="v4l2_camera_node" namespace="$(var robot_name)" output="screen">
+    <node pkg="v4l2_camera" exec="v4l2_camera_node" name="v4l2_camera_node" namespace="$(var robot_name)" output="screen">
     	<param name="image_size" value="[320, 240]"/>
         <param name="camera_frame_id" value="$(var robot_name)_camera"/>
-    </node> -->
+    </node>
 
     <!-- Lidar odometry -->
     <!-- <include file="$(find-pkg-share fastbot_bringup)/launch/laser_scan_matcher.launch.py">
@@ -31,8 +31,8 @@
     </include> -->
 
     <!-- Gripper server node -->
-    <!-- <node pkg="fastbot_firmware" exec="gripper_as.py" name="gripper_server_node" output="screen">
-    </node> -->
+    <node pkg="fastbot_firmware" exec="gripper_as.py" name="gripper_server_node" output="screen">
+    </node>
 
     <!-- Robot state publisher -->
     <include file="$(find-pkg-share fastbot_description)/launch/robot_state_publisher.launch.py">
