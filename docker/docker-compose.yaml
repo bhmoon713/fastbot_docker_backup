@@ -9,7 +9,7 @@ services:
     container_name: fastbot-humble
     environment:
       - ROBOT_NAME=fastbot_1
-      - RMW_IMPLEMENTAION=rmw_cyclonedds_cpp
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
       - CYCLONEDDS_URI=/var/lib/theconstruct.rrl/cyclonedds.xml
     volumes: 
       - /var/lib/theconstruct.rrl/cyclonedds.xml:/var/lib/theconstruct.rrl/cyclonedds.xml
