@@ -8,7 +8,7 @@ services:
     network_mode: host
     container_name: fastbot-humble
     environment:
-      - ROBOT_NAME=fastbot_1
+      - ROBOT_NAME=fastbot
       - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
       - CYCLONEDDS_URI=/var/lib/theconstruct.rrl/cyclonedds.xml
     volumes: 
@@ -17,7 +17,6 @@ services:
       - ./volumes/ros_entrypoint.sh:/ros_entrypoint.sh
       - ./volumes/bringup.sh:/bringup.sh
       - ./volumes/bringup.launch.xml:/root/ros2_ws/install/fastbot_bringup/share/fastbot_bringup/launch/bringup.launch.xml 
-      - ./volumes/ros2_laser_scan_matcher:/root/ros2_ws/install/ros2_laser_scan_matcher
       - ./volumes/raspicam_camera_info.yaml:/root/.ros/camera_info/mmal_service_16.1.yaml
     entrypoint: /ros_entrypoint.sh
     command: ["/bringup.sh"]
