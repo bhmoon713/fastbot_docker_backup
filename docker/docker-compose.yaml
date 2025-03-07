@@ -2,11 +2,11 @@ name: fastbot_humble
 
 services:
   fastbot-humble-container:
-    image: theconstructai/fastbot:humble-lslidar
+    image: theconstructai/fastbot:student
     pull_policy: always
     privileged: true
     network_mode: host
-    container_name: fastbot-humble
+    container_name: fastbot-student-humble
     environment:
       - ROBOT_NAME=fastbot
       - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
