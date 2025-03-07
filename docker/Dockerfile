@@ -23,12 +23,12 @@ SHELL ["/bin/bash", "-c"]
 
 # Clone repositories and pull the latest changes every time
 WORKDIR /root/ros2_ws/src
-RUN git clone https://bitbucket.org/theconstructcore/fastbot.git \
+RUN git clone -b student https://bitbucket.org/theconstructcore/fastbot.git \
     && git clone https://bitbucket.org/theconstructcore/lslidar_ros2_driver.git
 
 # Build the workspace
 WORKDIR /root/ros2_ws
-RUN rm -rf src/fastbot/docker/volumes/ros2_laser_scan_matcher && source /ros_entrypoint.sh && colcon build && rm -rf /root/ros2_ws/src
+RUN source /ros_entrypoint.sh && colcon build && rm -rf /root/ros2_ws/src
 
 # Stage 3: Final runtime stage
 FROM ros:humble-ros-core
@@ -46,7 +46,7 @@ RUN apt-get update && apt-get install -y \
     libpcap0.8 \
     libboost-thread1.74.0 \ 
     && rm -rf /var/lib/apt/lists/* \
-    && pip install RPi.GPIO pyserial adafruit-circuitpython-ina219 smbus2   
+    && pip install RPi.GPIO pyserial smbus2   
 
 # Copy built workspace from the build stage
 COPY --from=build /root/ros2_ws /root/ros2_ws
