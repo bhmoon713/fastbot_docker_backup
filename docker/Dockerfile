@@ -40,6 +40,7 @@ RUN apt-get update && apt-get install -y \
     ros-humble-v4l2-camera \
     ros-humble-image-transport-plugins \
     ros-humble-control-msgs \
+    ros-humble-teleop-twist-keyboard \
     python3-pip \
     i2c-tools \
     libgpiod2 \
