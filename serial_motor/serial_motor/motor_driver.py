@@ -53,7 +53,7 @@ class MotorDriver(Node):
         # Kinematic parameters for differential drive.
         self.declare_parameter("wheel_diameter", value=0.065)
         self.wheel_diameter = self.get_parameter("wheel_diameter").value
-        self.declare_parameter("wheel_separation", value=0.17)
+        self.declare_parameter("wheel_separation", value=0.125)
         self.wheel_separation = self.get_parameter("wheel_separation").value
         self.wheel_radius = self.wheel_diameter / 2
 
