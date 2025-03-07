@@ -61,7 +61,7 @@ def generate_launch_description():
     serial_port_arg = DeclareLaunchArgument("serial_port", default_value="/dev/ttyACM0")
     baud_rate_arg = DeclareLaunchArgument("baud_rate", default_value="57600")
     loop_rate_arg = DeclareLaunchArgument("loop_rate", default_value="30")
-    encoder_cpr_arg = DeclareLaunchArgument("encoder_cpr", default_value="550")
+    encoder_cpr_arg = DeclareLaunchArgument("encoder_cpr", default_value="2500")
 
     # Create a LaunchDescription with the argument and setup function.
     return LaunchDescription(
