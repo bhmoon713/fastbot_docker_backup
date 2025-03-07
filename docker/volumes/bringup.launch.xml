@@ -24,16 +24,6 @@
         <param name="camera_frame_id" value="$(var robot_name)_camera"/>
     </node>
 
-    <!-- Lidar odometry -->
-    <!-- <include file="$(find-pkg-share fastbot_bringup)/launch/laser_scan_matcher.launch.py">
-        <arg name="robot_name" value="$(var robot_name)"/>
-        <arg name="use_sim_time" value="$(var use_sim_time)"/>
-    </include> -->
-
-    <!-- Gripper server node -->
-    <node pkg="fastbot_firmware" exec="gripper_as.py" name="gripper_server_node" output="screen">
-    </node>
-
     <!-- Robot state publisher -->
     <include file="$(find-pkg-share fastbot_description)/launch/robot_state_publisher.launch.py">
         <arg name="robot_name" value="$(var robot_name)"/>
