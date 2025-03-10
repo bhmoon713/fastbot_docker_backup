@@ -7,7 +7,7 @@
     <arg name="serial_port" default="/dev/arduino_nano"/>
     <arg name="baud_rate" default="57600"/>
     <arg name="loop_rate" default="30"/>
-    <arg name="encoder_cpr" default="2500"/>
+    <arg name="encoder_cpr" default="550"/>
 
     <!-- Differential serial motor driver -->
     <include file="$(find-pkg-share serial_motor)/launch/serial_motor.launch.py">
