@@ -1,6 +1,7 @@
-# Stage 1: Base dependencies stage (install dependencies once)
-FROM ros:humble-ros-core AS base
+# Stage 1: Build Stage
+FROM ros:humble-ros-core as build_stage
 
+# Install build dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
     cmake \
@@ -13,27 +14,6 @@ RUN apt-get update && apt-get install -y \
     ros-humble-diagnostic-updater \
     libboost-all-dev \
     libpcap-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-# Stage 2: Clone and build stage
-FROM base AS build
-
-# Use /bin/bash for the next RUN command
-SHELL ["/bin/bash", "-c"]
-
-# Clone repositories and pull the latest changes every time
-WORKDIR /root/ros2_ws/src
-RUN git clone -b student https://bitbucket.org/theconstructcore/fastbot.git \
-    && git clone https://bitbucket.org/theconstructcore/lslidar_ros2_driver.git
-
-# Build the workspace
-WORKDIR /root/ros2_ws
-RUN source /ros_entrypoint.sh && colcon build && rm -rf /root/ros2_ws/src
-
-# Stage 3: Final runtime stage
-FROM ros:humble-ros-core
-
-RUN apt-get update && apt-get install -y \
     ros-humble-rmw-cyclonedds-cpp \
     ros-humble-xacro \
     ros-humble-robot-state-publisher \
@@ -45,11 +25,49 @@ RUN apt-get update && apt-get install -y \
     i2c-tools \
     libgpiod2 \
     libpcap0.8 \
-    libboost-thread1.74.0 \ 
-    && rm -rf /var/lib/apt/lists/* \
-    && pip install RPi.GPIO pyserial smbus2   
+    libboost-thread1.74.0 \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy built workspace from the build stage
-COPY --from=build /root/ros2_ws /root/ros2_ws
+# Clone the repositories for the project
+WORKDIR /root/ros2_ws/src
+RUN git clone -b student https://bitbucket.org/theconstructcore/fastbot.git \
+    && git clone https://bitbucket.org/theconstructcore/lslidar_ros2_driver.git
 
+# Install Python dependencies
+RUN pip install RPi.GPIO pyserial smbus2
+
+# Use /bin/bash for the next RUN command
+SHELL ["/bin/bash", "-c"]
+
+# Build the workspace
+WORKDIR /root/ros2_ws
+RUN source /ros_entrypoint.sh && colcon build --executor sequential
+
+# Stage 2: Runtime Stage (final image)
+FROM ros:humble-ros-core
+
+# Install runtime dependencies (only those needed to run the application)
+RUN apt-get update && apt-get install -y \
+    ros-humble-tf2-ros \
+    ros-humble-tf2-geometry-msgs \
+    ros-humble-pcl-conversions \
+    ros-humble-diagnostic-updater \
+    ros-humble-rmw-cyclonedds-cpp \
+    ros-humble-xacro \
+    ros-humble-robot-state-publisher \
+    ros-humble-v4l2-camera \
+    ros-humble-image-transport-plugins \
+    ros-humble-control-msgs \
+    ros-humble-teleop-twist-keyboard \
+    i2c-tools \
+    libgpiod2 \
+    libpcap0.8 \
+    libboost-thread1.74.0 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy the build artifacts from the build stage
+COPY --from=build_stage /root/ros2_ws /root/ros2_ws
+
+# Set the entrypoint for the runtime container
 ENTRYPOINT ["/ros_entrypoint.sh"]
+CMD ["bash"]
