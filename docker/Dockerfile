@@ -1,5 +1,5 @@
 # Stage 1: Build Stage
-FROM ros:humble-ros-core as build_stage
+FROM ros:humble-ros-core AS build_stage
 
 # Install build dependencies
 RUN apt-get update && apt-get install -y \
