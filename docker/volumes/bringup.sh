@@ -4,5 +4,5 @@
 robot_name=${ROBOT_NAME:-fastbot_1}
 
 ros2 launch lslidar_driver lslidar_launch.py &
-sleep 7
+sleep 2
 ros2 launch fastbot_bringup bringup.launch.xml robot_name:=$robot_name
