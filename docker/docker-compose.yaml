@@ -11,9 +11,12 @@ services:
       - ROBOT_NAME=fastbot
       - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
       - CYCLONEDDS_URI=/var/lib/theconstruct.rrl/cyclonedds.xml
+    group_add:
+      - "44"  # Video group GID
     volumes: 
       - /var/lib/theconstruct.rrl/cyclonedds.xml:/var/lib/theconstruct.rrl/cyclonedds.xml
       - /dev:/dev
+      - /dev/video0:/dev/video0
       - ./volumes/ros_entrypoint.sh:/ros_entrypoint.sh
       - ./volumes/bringup.sh:/bringup.sh
       - ./volumes/bringup.launch.xml:/root/ros2_ws/install/fastbot_bringup/share/fastbot_bringup/launch/bringup.launch.xml 
