@@ -14,27 +14,12 @@ RUN apt-get update && apt-get install -y \
     ros-humble-diagnostic-updater \
     libboost-all-dev \
     libpcap-dev \
-    ros-humble-rmw-cyclonedds-cpp \
-    ros-humble-xacro \
-    ros-humble-robot-state-publisher \
-    ros-humble-v4l2-camera \
-    ros-humble-image-transport-plugins \
-    ros-humble-control-msgs \
-    ros-humble-teleop-twist-keyboard \
-    python3-pip \
-    i2c-tools \
-    libgpiod2 \
-    libpcap0.8 \
-    libboost-thread1.74.0 \
     && rm -rf /var/lib/apt/lists/*
 
 # Clone the repositories for the project
 WORKDIR /root/ros2_ws/src
 RUN git clone -b student https://bitbucket.org/theconstructcore/fastbot.git \
     && git clone https://bitbucket.org/theconstructcore/lslidar_ros2_driver.git
-
-# Install Python dependencies
-RUN pip install RPi.GPIO pyserial smbus2
 
 # Use /bin/bash for the next RUN command
 SHELL ["/bin/bash", "-c"]
@@ -50,7 +35,6 @@ FROM ros:humble-ros-core
 RUN apt-get update && apt-get install -y \
     ros-humble-tf2-ros \
     ros-humble-tf2-geometry-msgs \
-    ros-humble-pcl-conversions \
     ros-humble-diagnostic-updater \
     ros-humble-rmw-cyclonedds-cpp \
     ros-humble-xacro \
@@ -59,11 +43,13 @@ RUN apt-get update && apt-get install -y \
     ros-humble-image-transport-plugins \
     ros-humble-control-msgs \
     ros-humble-teleop-twist-keyboard \
+    python3-pip \
     i2c-tools \
     libgpiod2 \
     libpcap0.8 \
     libboost-thread1.74.0 \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && pip install RPi.GPIO pyserial adafruit-circuitpython-ina219 smbus2   
 
 # Copy the build artifacts from the build stage
 COPY --from=build_stage /root/ros2_ws /root/ros2_ws
