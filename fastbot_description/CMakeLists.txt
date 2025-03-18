@@ -12,7 +12,7 @@ find_package(ament_cmake REQUIRED)
 # find_package(<dependency> REQUIRED)ññ
 
 install(
-  DIRECTORY launch models
+  DIRECTORY launch models onshape
   DESTINATION share/${PROJECT_NAME}
 )
 

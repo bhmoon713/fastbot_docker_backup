@@ -4,65 +4,58 @@ from launch import LaunchDescription
 from launch_ros.actions import Node
 import xacro
 
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, TimerAction
 from launch.substitutions import LaunchConfiguration
 from launch.actions import OpaqueFunction
 
 
 def launch_setup(context, *args, **kwargs):
-    ####### DATA INPUT ##########
-    # This is to access the argument variables. Otherwise, we can't access the values
     robot_name = LaunchConfiguration("robot_name").perform(context)
     robot_file = LaunchConfiguration("robot_file").perform(context)
-    robot_description_topic_name = "/" + robot_name + "_robot_description"
-    robot_state_publisher_name = robot_name + "_robot_state_publisher"
-    joint_state_topic_name = "/" + robot_name + "/joint_states"
-    ####### DATA INPUT END ##########
 
     package_description = "fastbot_description"
 
     robot_desc_path = os.path.join(
         get_package_share_directory(package_description), "models/urdf/", robot_file
     )
-    # Load XACRO file with ARGUMENTS
+    
+    # Load XACRO file
     robot_desc = xacro.process_file(
         robot_desc_path, mappings={"robot_name": robot_name}
     )
-
     xml = robot_desc.toxml()
-
-    # Joint State Publisher Node
-    joint_state_publisher_node = Node(
-        package="joint_state_publisher",
-        executable="joint_state_publisher",
-        name=robot_name + "_joint_state_publisher",
-        parameters=[{"use_sim_time": True}],
-        remappings=[
-            ("/joint_states", joint_state_topic_name),
-        ],
-        output="screen",
-    )
 
     # Robot State Publisher Node
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
-        name=robot_state_publisher_name,
+        name=f"{robot_name}_robot_state_publisher",
         emulate_tty=True,
         parameters=[{"use_sim_time": True, "robot_description": xml}],
-        # remappings=[
-        #     ("/robot_description", robot_description_topic_name),
-        #     ("/joint_states", joint_state_topic_name),
-        # ],
+        remappings=[("/robot_description", "robot_description")],  # Ensure correct topic
         output="screen",
     )
 
-    return [joint_state_publisher_node, robot_state_publisher_node]
+    # Joint State Publisher Node with a 2-second delay
+    # joint_state_publisher_node = TimerAction(
+    #     period=2.0,  # Increase delay to ensure robot_state_publisher initializes
+    #     actions=[
+    #         Node(
+    #             package="joint_state_publisher",
+    #             executable="joint_state_publisher",
+    #             name=f"{robot_name}_joint_state_publisher",
+    #             parameters=[{"use_sim_time": True}],
+    #             output="screen",
+    #         )
+    #     ],
+    # )
 
+    # return [robot_state_publisher_node, joint_state_publisher_node]
+    return [robot_state_publisher_node]
 
 def generate_launch_description():
     robot_name_arg = DeclareLaunchArgument("robot_name", default_value="fastbot")
-    robot_file_arg = DeclareLaunchArgument("robot_file", default_value="fastbot.xacro")
+    robot_file_arg = DeclareLaunchArgument("robot_file", default_value="fastbot.urdf")
 
     return LaunchDescription(
         [robot_name_arg, robot_file_arg, OpaqueFunction(function=launch_setup)]

@@ -1,8 +1,8 @@
 <?xml version='1.0' ?>
 <launch>
         <include file="$(find-pkg-share fastbot_gazebo)/launch/spawn.launch.xml">
-                <arg name="robot_name" value="fastbot_1"/>
-                <arg name="robot_file" value="fastbot_multi_sim.xacro"/>
+                <arg name="robot_name" value="fastbot"/>
+                <arg name="robot_file" value="fastbot.xacro"/>
 
                 <arg name="x_spawn" value="0.5"/>
                 <arg name="y_spawn" value="-0.75"/>
