@@ -10,14 +10,13 @@ from launch.actions import OpaqueFunction
 
 
 def launch_setup(context, *args, **kwargs):
+    
     ####### DATA INPUT ##########
-    # This is to access the argument variables. Otherwise, we can't access the values
     robot_name = LaunchConfiguration("robot_name").perform(context)
     robot_file = LaunchConfiguration("robot_file").perform(context)
     robot_description_topic_name = "/" + robot_name + "_robot_description"
     robot_state_publisher_name = robot_name + "_robot_state_publisher"
     joint_state_topic_name = "/" + robot_name + "/joint_states"
-    ####### DATA INPUT END ##########
 
     package_description = "fastbot_description"
 
@@ -31,18 +30,6 @@ def launch_setup(context, *args, **kwargs):
 
     xml = robot_desc.toxml()
 
-    # Joint State Publisher Node
-    joint_state_publisher_node = Node(
-        package="joint_state_publisher",
-        executable="joint_state_publisher",
-        name=robot_name + "_joint_state_publisher",
-        parameters=[{"use_sim_time": True}],
-        remappings=[
-            ("/joint_states", joint_state_topic_name),
-        ],
-        output="screen",
-    )
-
     # Robot State Publisher Node
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
@@ -50,14 +37,14 @@ def launch_setup(context, *args, **kwargs):
         name=robot_state_publisher_name,
         emulate_tty=True,
         parameters=[{"use_sim_time": True, "robot_description": xml}],
-        # remappings=[
-        #     ("/robot_description", robot_description_topic_name),
-        #     ("/joint_states", joint_state_topic_name),
-        # ],
+        remappings=[
+            ("/robot_description", robot_description_topic_name),
+            ("/joint_states", joint_state_topic_name),
+        ],
         output="screen",
     )
 
-    return [joint_state_publisher_node, robot_state_publisher_node]
+    return [robot_state_publisher_node]
 
 
 def generate_launch_description():
