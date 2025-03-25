@@ -49,7 +49,7 @@ def launch_setup(context, *args, **kwargs):
 
 def generate_launch_description():
     robot_name_arg = DeclareLaunchArgument("robot_name", default_value="fastbot")
-    robot_file_arg = DeclareLaunchArgument("robot_file", default_value="fastbot.xacro")
+    robot_file_arg = DeclareLaunchArgument("robot_file", default_value="fastbot_multi_sim.xacro")
 
     return LaunchDescription(
         [robot_name_arg, robot_file_arg, OpaqueFunction(function=launch_setup)]

@@ -2,7 +2,7 @@
 <launch>
 
     <arg name="robot_name" default="fastbot"/>
-    <arg name="robot_file" default="fastbot.xacro"/>
+    <arg name="robot_file" default="fastbot_multi_sim.xacro"/>
 
     <arg name="x_spawn" default="2.8162"/>
     <arg name="y_spawn" default="-1.04"/>

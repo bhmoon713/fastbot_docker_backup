@@ -26,11 +26,11 @@
 			</ros>
 
 			<!-- wheels -->
-			<left_joint>${robot_name}_motor_left</left_joint>
-			<right_joint>${robot_name}_motor_right</right_joint>
+			<left_joint>${robot_name}_left_wheel</left_joint>
+			<right_joint>${robot_name}_right_wheel</right_joint>
 
 			<!-- kinematics -->
-			<wheel_separation>0.17186</wheel_separation>
+			<wheel_separation>0.12</wheel_separation>
 			<wheel_diameter>0.065</wheel_diameter>
 
 			<!-- limits -->
@@ -51,7 +51,7 @@
 	<!--  ##########  LIDAR PLUGIN  ##########  -->
 
 	<gazebo reference="${robot_name}_lidar">
-		<sensor name="${robot_name}_ydlidar" type="ray">
+		<sensor name="${robot_name}_lslidar" type="ray">
 			<always_on>true</always_on>
 			<visualize>false</visualize>
 			<update_rate>10</update_rate>

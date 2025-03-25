@@ -49,7 +49,7 @@ def launch_setup(context, *args, **kwargs):
 
 def generate_launch_description(): 
 
-    robot_name_arg = DeclareLaunchArgument('robot_name', default_value='box_bot')
+    robot_name_arg = DeclareLaunchArgument('robot_name', default_value='fastbot')
     x_spawn_arg = DeclareLaunchArgument('x_spawn', default_value='0.0')
     y_spawn_arg = DeclareLaunchArgument('y_spawn', default_value='0.0')
     z_spawn_arg = DeclareLaunchArgument('z_spawn', default_value='0.0')
