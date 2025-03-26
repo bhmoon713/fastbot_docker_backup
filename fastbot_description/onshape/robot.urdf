@@ -250,4 +250,36 @@
         <axis xyz="0 0 1"/>
         <limit effort="10" velocity="10"/>
     </joint>
+    <!-- Link pololu_ball_caster -->
+    <link name="pololu_ball_caster">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1e-09"/>
+            <inertia ixx="1e-09" ixy="0" ixz="0" iyy="1e-09" iyz="0" izz="1e-09"/>
+        </inertial>
+        <!-- Part pololu_ball_caster -->
+        <visual>
+            <origin xyz="0.006731 0 -0.0106945" rpy="-1.5708 -0 0"/>
+            <geometry>
+                <mesh filename="package://fastbot_description/onshape/assets/pololu_ball_caster.stl"/>
+            </geometry>
+            <material name="pololu_ball_caster_material">
+                <color rgba="0.34902 0.376471 0.4 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.006731 0 -0.0106945" rpy="-1.5708 -0 0"/>
+            <geometry>
+                <mesh filename="package://fastbot_description/onshape/assets/pololu_ball_caster.stl"/>
+            </geometry>
+        </collision>
+    </link>
+    <!-- Joint from fastbot_chassis to pololu_ball_caster -->
+    <joint name="caster" type="fixed">
+        <origin xyz="-0.0100317 -0.0541426 0.00334516" rpy="0 -0 0"/>
+        <parent link="fastbot_chassis"/>
+        <child link="pololu_ball_caster"/>
+        <axis xyz="0 0 1"/>
+        <limit effort="10" velocity="10"/>
+    </joint>
 </robot>
