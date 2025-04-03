@@ -89,7 +89,7 @@
 				<remapping>~/out:=scan</remapping>
 			</ros>
 			<output_type>sensor_msgs/LaserScan</output_type>
-			<frame_name>lidar</frame_name>
+			<frame_name>fastbot_n10_v2</frame_name>
 			</plugin>
 		</sensor>
 		</gazebo>
