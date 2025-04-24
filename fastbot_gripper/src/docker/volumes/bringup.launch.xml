@@ -1,4 +1,0 @@
-    <node pkg="fastbot_gripper" exec="gripper_as.py" name="gripper_server_node" output="screen">
-        <param name="close_duty" value="6"/>
-        <param name="open_duty" value="12"/>
-    </node>
