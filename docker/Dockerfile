@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y \
 
 # Clone the repositories for the project
 WORKDIR /root/ros2_ws/src
+ARG CACHEBUST=1
 RUN git clone -b student https://bitbucket.org/theconstructcore/fastbot.git \
     && git clone https://bitbucket.org/theconstructcore/lslidar_ros2_driver.git
 
