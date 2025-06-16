@@ -9,10 +9,11 @@ from threading import Lock
 from rclpy.node import Node
 from typing import List, Optional
 from nav_msgs.msg import Odometry
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import Twist, TransformStamped
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.callback_groups import ReentrantCallbackGroup
 from serial_motor_msgs.msg import MotorVels, EncoderVals
+from tf2_ros import TransformBroadcaster
 
 
 class MotorDriver(Node):
@@ -71,6 +72,9 @@ class MotorDriver(Node):
         self.motor_vels_pub_ = self.create_publisher(MotorVels, "motor_vels", 10)
         self.encoder_pub_ = self.create_publisher(EncoderVals, "encoder_vals", 10)
         self.odom_pub_ = self.create_publisher(Odometry, "odom", 10)
+        
+        # Create transform broadcaster for tf2
+        self.tf_broadcaster = TransformBroadcaster(self)
 
         # Timer callback to continuously publish odometry
         self.create_timer(0.1, self._timer_callback, callback_group=self.callback_group)
@@ -276,6 +280,9 @@ class MotorDriver(Node):
 
         # Publish message
         self.odom_pub_.publish(odom_msg)
+        
+        # Broadcast transform from odom to base_link
+        self.broadcast_odom_transform(quat)
 
     def euler_to_quaternion(
         self, roll: float, pitch: float, yaw: float
@@ -294,6 +301,32 @@ class MotorDriver(Node):
             roll / 2
         ) * math.sin(pitch / 2) * math.sin(yaw / 2)
         return (qx, qy, qz, qw)
+    
+    def broadcast_odom_transform(self, quaternion: tuple[float, float, float, float]) -> None:
+        """Broadcast the transform from odom to base_link frame.
+        
+        Args:
+            quaternion: Quaternion representing the robot's orientation (qx, qy, qz, qw)
+        """
+        # Create transform message
+        transform = TransformStamped()
+        transform.header.stamp = self.get_clock().now().to_msg()
+        transform.header.frame_id = self.args.robot_name_value + "_odom"
+        transform.child_frame_id = self.args.robot_name_value + "_base_link"
+        
+        # Set translation (position)
+        transform.transform.translation.x = self.x
+        transform.transform.translation.y = self.y
+        transform.transform.translation.z = 0.0
+        
+        # Set rotation (orientation)
+        transform.transform.rotation.x = quaternion[0]
+        transform.transform.rotation.y = quaternion[1]
+        transform.transform.rotation.z = quaternion[2]
+        transform.transform.rotation.w = quaternion[3]
+        
+        # Broadcast the transform
+        self.tf_broadcaster.sendTransform(transform)
 
     def send_command(self, cmd_string: str) -> Optional[str]:
         """Utility method to send a command to the motor controller via serial.
