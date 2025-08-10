@@ -1,0 +1,6 @@
+# LSLiDAR variant with CH340 chip
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="55d4", SYMLINK+="lslidar", MODE="0666", GROUP="dialout"
+
+# LSLiDAR variant with CP210x chip
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", SYMLINK+="lslidar", MODE="0666", GROUP="dialout"
+

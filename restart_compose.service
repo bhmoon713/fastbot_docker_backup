@@ -1,0 +1,13 @@
+[Unit]
+Description=Restart fastbot docker stack after boot
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/home/fastbot/git-repo/fastbot/docker/volumes/restart_compose.sh
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target
+
